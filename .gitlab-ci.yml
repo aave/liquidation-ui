@@ -1,0 +1,80 @@
+stages:
+  - build
+  - deploy
+
+.build-base: &build-base
+  stage: build
+  tags:
+    - aave-build-runner
+  script:
+    - docker-compose -f docker-compose.yml -f docker-compose.server-base.yml -f docker-compose.build-${BUILD_MODE}.yml build
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker-compose -f docker-compose.yml -f docker-compose.server-base.yml -f docker-compose.build-${BUILD_MODE}.yml push
+
+.deploy-stage-base: &deploy-stage-base
+  stage: deploy
+  tags:
+    - claster-manager
+
+.environment-base: &environment-base
+  name: liquidations-${CI_COMMIT_REF_SLUG}
+
+.deploy-base: &deploy-base
+  <<: *deploy-stage-base
+  script:
+    - docker stack deploy -c docker-compose.yml -c docker-compose.server-base.yml -c docker-compose.server-${MODE}.yml --with-registry-auth liquidations-${CI_COMMIT_REF_SLUG}
+
+.dev-base: &dev-base
+  except:
+    - master
+  only:
+    - merge_requests
+  variables:
+    DOMAIN: liquidations-${CI_COMMIT_REF_SLUG}.testing.aave.com
+    BUILD_MODE: dev
+    MODE: dev
+
+build_dev:
+  <<: *dev-base
+  <<: *build-base
+
+deploy_dev:
+  <<: *dev-base
+  <<: *deploy-base
+  environment:
+    <<: *environment-base
+    url: https://liquidations-${CI_COMMIT_REF_SLUG}.testing.aave.com
+    on_stop: stop_dev
+
+stop_dev:
+  <<: *deploy-stage-base
+  <<: *dev-base
+  when: manual
+  script:
+    - docker stack rm dlp-client-${CI_COMMIT_REF_SLUG}
+  environment:
+    <<: *environment-base
+    url: https://liquidations-${CI_COMMIT_REF_SLUG}.testing.aave.com
+    action: stop
+
+
+.prod-base: &prod-base
+  only:
+    - master
+  variables:
+    DOMAIN: liquidations.aave.com
+    MODE: prod
+    BUILD_MODE: prod
+
+build_prod:
+  <<: *prod-base
+  <<: *build-base
+
+deploy_prod:
+  <<: *prod-base
+  <<: *deploy-base
+  environment:
+    <<: *environment-base
+    url: https://${DOMAIN}
+
+
