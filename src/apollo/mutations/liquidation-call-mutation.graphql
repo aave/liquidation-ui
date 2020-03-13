@@ -1,0 +1,5 @@
+mutation LiquidationCall($data: LiquidationCallInput!) {
+    liquidationCall(data: $data) {
+        ...EthTransaction
+    }
+}

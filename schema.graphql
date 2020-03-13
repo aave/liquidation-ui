@@ -1,0 +1,88 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type EthereumTransactionModel {
+  data: String
+  from: String!
+  gas: String
+  to: String!
+  value: String
+}
+
+type EthereumTransactionModelExtended {
+  tx: EthereumTransactionModel!
+  txType: String!
+}
+
+type Mutation {
+  borrow(data: BorrowInput!): [EthereumTransactionModelExtended!]!
+  deposit(data: TransferFromInput!): [EthereumTransactionModelExtended!]!
+  liquidationCall(data: LiquidationCallInput!): [EthereumTransactionModelExtended!]!
+  mint(data: MintInput!): [EthereumTransactionModelExtended!]!
+  redeem(data: RedeemInput!): [EthereumTransactionModelExtended!]!
+  repay(data: TransferFromInput!): [EthereumTransactionModelExtended!]!
+  setUsageAsCollateral(data: SetUsageAsCollateralInput!): [EthereumTransactionModelExtended!]!
+  swapBorrowRateMode(data: ApproveInput!): [EthereumTransactionModelExtended!]!
+}
+
+type Query {
+  ping: String!
+}
+
+"InterestRate options"
+enum InterestRate {
+  None
+  Stable
+  Variable
+}
+
+input ApproveInput {
+  reserve: String!
+  userAddress: String!
+}
+
+input BorrowInput {
+  amount: String!
+  interestRateMode: InterestRate!
+  onBehalfOf: String
+  referralCode: String
+  reserve: String!
+  userAddress: String!
+}
+
+input LiquidationCallInput {
+  collateralReserve: String!
+  getAToken: Boolean
+  purchaseAmount: String!
+  reserve: String!
+  userAddress: String!
+}
+
+input MintInput {
+  reserve: String!
+  userAddress: String!
+}
+
+input RedeemInput {
+  aToken: String!
+  amount: String!
+  userAddress: String!
+}
+
+input SetUsageAsCollateralInput {
+  reserve: String!
+  usageAsCollateral: Boolean!
+  userAddress: String!
+}
+
+input TransferFromInput {
+  amount: String!
+  onBehalfOf: String
+  referralCode: String
+  reserve: String!
+  userAddress: String!
+}

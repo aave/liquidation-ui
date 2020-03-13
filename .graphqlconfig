@@ -1,0 +1,22 @@
+{
+  "name": "Local GraphQL Schema",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Actions resolver": {
+        "url": "http://localhost:5000/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      },
+      "TheGraph resolver": {
+        "url": "https://api.thegraph.com/subgraphs/name/aave/protocol-ropsten-raw",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}
