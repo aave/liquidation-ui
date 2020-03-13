@@ -29,9 +29,7 @@ export default function LiquidationForm({
   const intl = useIntl();
 
   const [amount, setAmount] = useState('');
-  const [collateralReserve, setCollateralReserve] = useState(
-    userReserve.user.reservesData[0].reserve.id
-  );
+  const [collateralReserve, setCollateralReserve] = useState('');
   const [error, setError] = useState('');
 
   const handleCollateralClick = (event: ChangeEvent<HTMLInputElement>) => {

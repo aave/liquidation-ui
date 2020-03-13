@@ -91,7 +91,7 @@ export function DataGrid() {
     userAddress: string,
     reserveId: string
   ) => {
-    await LiquidationCallMutation({
+    const result = await LiquidationCallMutation({
       variables: {
         data: {
           userAddress,
@@ -101,6 +101,7 @@ export function DataGrid() {
         },
       },
     });
+    return (result && result.data && result.data.liquidationCall) || [];
   };
 
   return (
