@@ -54,6 +54,8 @@ export default function TxExecutionBox({
 
   const onCheckboxClick = () => setChecked(!checked);
 
+  console.log('txData', txData);
+
   const handleSubmitTransaction = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await sendTransaction(txData, { onExecution, onConfirmation });

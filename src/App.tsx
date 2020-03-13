@@ -29,7 +29,7 @@ function App() {
         <Route exact={true} path="/" component={DataGrid} />
         <Route
           exact={true}
-          path="/liquidation/:userAddress/:collateralReserve/:reserveId/confirmation"
+          path="/liquidation/:collateralReserve/:reserveId/confirmation"
           component={LiquidationConfirmation}
         />
 

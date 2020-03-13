@@ -37,7 +37,7 @@ export function DataGrid() {
   }
 
   const reserves = data.reserves;
-  const usdPriceEth = data.priceOracle.usdPriceEth
+  const usdPriceEth = data.priceOracle.usdPriceEth;
   const userReserves = data.userReserves
     .map(userReserve => {
       return {
@@ -57,7 +57,7 @@ export function DataGrid() {
         userReserve.user.id.toLowerCase().includes(searchValue.toLowerCase())
     );
 
-  const pageSize = 10;
+  const pageSize = 15;
   const lastPage =
     Math.round(userReserves.length / pageSize) !== 0
       ? Math.round(userReserves.length / pageSize)
@@ -87,16 +87,9 @@ export function DataGrid() {
   };
   const hoverColor = rgba(`${currentTheme.secondary.rgb}, 0.4`);
 
-  const handleSubmit = async (
-    amount: string,
-    collateralReserve: string,
-    userAddress: string,
-    reserveId: string
-  ) => {
+  const handleSubmit = async (amount: string, collateralReserve: string, reserveId: string) => {
     const query = queryString.stringify({ amount });
-    history.push(
-      `/liquidation/${userAddress}/${collateralReserve}/${reserveId}/confirmation?${query}`
-    );
+    history.push(`/liquidation/${collateralReserve}/${reserveId}/confirmation?${query}`);
   };
 
   return (
