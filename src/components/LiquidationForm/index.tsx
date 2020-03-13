@@ -30,7 +30,7 @@ export default function LiquidationForm({
 
   const [amount, setAmount] = useState('');
   const [collateralReserve, setCollateralReserve] = useState(
-    userReserve.user.reservesData[0].reserve.symbol
+    userReserve.user.reservesData[0].reserve.id
   );
   const [error, setError] = useState('');
 
@@ -73,7 +73,7 @@ export default function LiquidationForm({
           {userReserve.user.reservesData.map((res: any, i: number) => (
             <div
               className={classNames('LiquidationForm__radioField', {
-                LiquidationForm__radioFieldActive: collateralReserve === res.reserve.symbol,
+                LiquidationForm__radioFieldActive: collateralReserve === res.reserve.id,
               })}
               key={i}
             >
@@ -81,8 +81,8 @@ export default function LiquidationForm({
                 type="radio"
                 id={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
                 name="Collaterals"
-                value={res.reserve.symbol}
-                checked={collateralReserve === res.reserve.symbol}
+                value={res.reserve.id}
+                checked={collateralReserve === res.reserve.id}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => handleCollateralClick(event)}
               />
               <label
