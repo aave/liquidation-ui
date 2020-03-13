@@ -1,0 +1,66 @@
+query Liquidators {
+  reserves {
+    id
+    name
+    symbol
+    decimals
+    isActive
+    usageAsCollateralEnabled
+    borrowingEnabled
+    stableBorrowRateEnabled
+    baseLTVasCollateral
+    liquidityIndex
+    reserveLiquidationThreshold
+    variableBorrowIndex
+    aToken {
+      id
+    }
+    availableLiquidity
+    stableBorrowRate
+    liquidityRate
+    totalBorrows
+    totalBorrowsStable
+    totalBorrowsVariable
+    totalLiquidity
+    utilizationRate
+    variableBorrowRate
+    price {
+      priceInEth
+    }
+    lastUpdateTimestamp
+  }
+  userReserves(where: {principalBorrows_gt: 0}, first: 999) {
+    principalBorrows
+    reserve {
+      id
+      symbol
+    }
+    user {
+      id
+      reserves(where: {principalATokenBalance_gt: 0}) {
+        principalATokenBalance
+        userBalanceIndex
+        redirectedBalance
+        interestRedirectionAddress
+        reserve{
+          id
+          name
+          symbol
+          decimals
+          liquidityRate
+          lastUpdateTimestamp
+          aToken {
+            id
+          }
+        }
+        usageAsCollateralEnabledOnUser
+        borrowRate
+        borrowRateMode
+        originationFee
+        principalBorrows
+        variableBorrowIndex
+        lastUpdateTimestamp
+      }
+    }
+  }
+}

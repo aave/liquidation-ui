@@ -4,6 +4,7 @@ import "./App.css";
 import Web3 from "web3";
 import LendingPoolABI from "./ABI/LendingPoolABI";
 import ERC20ABI from "./ABI/ERC20ABI";
+import { DataGrid } from './DataGrid';
 
 
 let web3: Web3;
@@ -42,6 +43,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <button onClick={connectWallet}>Connect to wallet</button>
+        <DataGrid/>
       </header>
     </div>
   );
