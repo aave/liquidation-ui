@@ -6,10 +6,10 @@ const staticStyles = css.global`
   @import 'src/_mixins/screen-size';
 
   .DataGrid {
-    padding: 35px 15%;
+    padding: 5px 15%;
     position: relative;
     @include respond-to(lg) {
-      padding: 35px 8px;
+      padding: 5px 8px;
     }
 
     &__item {
@@ -36,6 +36,7 @@ const staticStyles = css.global`
         padding: 12px 50px 12px 20px;
       }
       p {
+        word-break: break-all;
         flex: 2;
         &:last-child {
           flex: 1;
@@ -129,6 +130,77 @@ const staticStyles = css.global`
 
       .DataGrid__content {
         padding-bottom: 10px;
+      }
+    }
+
+    &__navigation-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 0;
+      @include respond-to(sm) {
+        flex-direction: column;
+      }
+    }
+    &__search-inner {
+      @include respond-to(sm) {
+        margin-bottom: 20px;
+      }
+    }
+    &__pagination-inner {
+      display: flex;
+      align-items: center;
+    }
+    &__pagination-button {
+      font-size: 0;
+      line-height: 0;
+      position: relative;
+      border-style: solid;
+      border-width: 0 2px 2px 0;
+      padding: 3px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 2;
+      display: inline-block;
+      &:disabled {
+        cursor: default;
+      }
+      &:after {
+        content: '';
+        border: 1px solid;
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+      }
+    }
+    &__pagination-buttonPrev {
+      transform: rotate(135deg);
+      margin-right: 30px;
+      &:active {
+        transform: rotate(135deg) scale(0.9);
+      }
+    }
+    &__pagination-buttonNext {
+      transform: rotate(-45deg);
+      &:active {
+        transform: rotate(-45deg) scale(0.9);
+      }
+    }
+    &__page-counter {
+      margin-left: 25px;
+    }
+    &__pageGoTo {
+      margin-left: 30px;
+      span {
+        margin-right: 5px;
+      }
+      input {
+        border-radius: 4px;
+        padding: 3px 5px;
+        font-size: $medium;
       }
     }
   }

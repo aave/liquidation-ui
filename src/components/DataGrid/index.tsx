@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import moment from 'moment';
 import { useIntl } from 'react-intl';
 import { formatUserSummaryData } from '@aave/protocol-js';
@@ -10,6 +10,7 @@ import { useLiquidatorsQuery } from '../../apollo/generated';
 import Preloader from 'components/Preloader';
 import LiquidationForm from 'components/LiquidationForm';
 import NoDataPanel from 'components/NoDataPanel';
+import SearchField from 'components/fields/SearchField';
 
 import staticStyles from './style';
 
@@ -22,6 +23,8 @@ export function DataGrid() {
   const { currentTheme } = useThemeContext();
   const intl = useIntl();
   const [activeItem, setActiveItem] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+  const [page, setPage] = useState(1);
 
   if (loading) {
     return <Preloader />;
@@ -44,7 +47,36 @@ export function DataGrid() {
         ),
       };
     })
-    .filter(userReserve => Number(userReserve.user.healthFactor) < 1);
+    .filter(
+      userReserve =>
+        Number(userReserve.user.healthFactor) < 1 &&
+        userReserve.user.id.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+  const pageSize = 10;
+  const lastPage =
+    Math.round(userReserves.length / pageSize) !== 0
+      ? Math.round(userReserves.length / pageSize)
+      : 1;
+  const userReservesPagination = userReserves.slice((page - 1) * pageSize, page * pageSize);
+
+  const handlePageButtonClick = (type: 'prev' | 'next') => {
+    if (type === 'next') {
+      setPage(page + 1);
+    } else {
+      setPage(page - 1);
+    }
+  };
+  const pageGoTo = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setPage(
+      Number(event.target.value) === 0
+        ? 1
+        : Number(event.target.value) > lastPage
+        ? lastPage
+        : Number(event.target.value)
+    );
+  };
 
   const onToggle = (userId: string) => {
     setActiveItem(activeItem === userId ? '' : userId);
@@ -58,7 +90,42 @@ export function DataGrid() {
 
   return (
     <div className="DataGrid">
-      {userReserves.map((userReserve, i) => (
+      <div className="DataGrid__navigation-inner">
+        <div className="DataGrid__search-inner">
+          <SearchField
+            placeholder="Search by address"
+            value={searchValue}
+            onChange={setSearchValue}
+          />
+        </div>
+        {lastPage > 1 && (
+          <div className="DataGrid__pagination-inner">
+            <button
+              onClick={() => handlePageButtonClick('prev')}
+              disabled={page === 1}
+              className="DataGrid__pagination-button DataGrid__pagination-buttonPrev"
+              type="button"
+            />
+            <button
+              onClick={() => handlePageButtonClick('next')}
+              disabled={page === lastPage}
+              className="DataGrid__pagination-button DataGrid__pagination-buttonNext"
+              type="button"
+            />
+
+            <div className="DataGrid__pageGoTo">
+              <span>Go to</span>
+              <input type="number" max={lastPage} min={1} onChange={pageGoTo} />
+            </div>
+
+            <p className="DataGrid__page-counter">
+              Page {page} / {lastPage}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {userReservesPagination.map((userReserve, i) => (
         <div
           className={classNames('DataGrid__item', {
             DataGrid__itemActive: activeItem === userReserve.user.id,
@@ -71,7 +138,7 @@ export function DataGrid() {
             onClick={() => onToggle(userReserve.user.id)}
           >
             <p>
-              <span>User id:</span>
+              <span>Address:</span>
               {userReserve.user.id}
             </p>
             <p>
@@ -109,7 +176,9 @@ export function DataGrid() {
         </div>
       ))}
 
-      <style jsx={true} global={true}>{staticStyles}</style>
+      <style jsx={true} global={true}>
+        {staticStyles}
+      </style>
       <style jsx={true} global={true}>{`
         @import 'src/_mixins/vars';
         @import 'src/_mixins/screen-size';
@@ -146,6 +215,31 @@ export function DataGrid() {
                   color: ${currentTheme.secondary.hex};
                 }
               }
+            }
+          }
+
+          &__pagination-button {
+            border-color: ${currentTheme.secondary.hex};
+            &:disabled {
+              border-color: ${currentTheme.disabledElement.hex};
+              &:after {
+                border-color: ${currentTheme.disabledElement.hex};
+              }
+            }
+            &:after {
+              border-color: ${currentTheme.secondary.hex};
+            }
+          }
+
+          &__page-counter {
+            color: ${currentTheme.gray.hex};
+          }
+
+          &__pageGoTo {
+            color: ${currentTheme.gray.hex};
+            input {
+              color: ${currentTheme.gray.hex};
+              border: 1px solid ${currentTheme.lightGray.hex};
             }
           }
 

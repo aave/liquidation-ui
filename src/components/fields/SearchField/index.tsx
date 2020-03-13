@@ -15,9 +15,16 @@ export interface SearchFieldProps {
   value: string;
   onChange: (value: string) => void;
   className?: string;
+  placeholder?: string;
 }
 
-export default function SearchField({ value, onChange, className, ...props }: SearchFieldProps) {
+export default function SearchField({
+  value,
+  onChange,
+  className,
+  placeholder,
+  ...props
+}: SearchFieldProps) {
   const intl = useIntl();
   const { isDarkMode, currentTheme } = useThemeContext();
   const [onFocus, setFocus] = useState(false);
@@ -41,7 +48,7 @@ export default function SearchField({ value, onChange, className, ...props }: Se
       <BasicField
         value={value}
         onChange={onChange}
-        placeholder={intl.formatMessage(messages.placeholder)}
+        placeholder={placeholder || intl.formatMessage(messages.placeholder)}
         type="search"
         {...props}
       />
