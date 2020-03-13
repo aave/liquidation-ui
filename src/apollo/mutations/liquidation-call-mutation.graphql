@@ -1,5 +1,12 @@
 mutation LiquidationCall($data: LiquidationCallInput!) {
     liquidationCall(data: $data) {
-        ...EthTransaction
+      tx {
+        from
+        to
+        gas
+        data
+        value
+      }
+      txType
     }
 }

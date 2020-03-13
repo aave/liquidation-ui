@@ -14,7 +14,10 @@ generates:
   src/apollo/generated.tsx:
     schema:
       - https://api.thegraph.com/subgraphs/name/aave/protocol-ropsten-raw
-    documents: "src/apollo/queries/*.graphql"
+    documents:
+      - "src/apollo/queries/*.graphql"
+      - "src/apollo/mutations/*.graphql"
+      - "src/apollo/fragments/*.graphql"
     plugins:
       - "typescript"
       - "typescript-operations"

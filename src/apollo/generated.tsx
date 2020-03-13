@@ -1171,6 +1171,14 @@ export enum LiquidationCall_OrderBy {
   Timestamp = 'timestamp',
 }
 
+export type LiquidationCallInput = {
+  userAddress: Scalars['String'];
+  reserve: Scalars['String'];
+  collateralReserve: Scalars['String'];
+  purchaseAmount: Scalars['String'];
+  getAToken?: Maybe<Scalars['Boolean']>;
+};
+
 export type MintInput = {
   userAddress: Scalars['String'];
   reserve: Scalars['String'];
@@ -1179,6 +1187,7 @@ export type MintInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   borrow: Array<EthereumTransactionModelExtended>;
+  liquidationCall: Array<EthereumTransactionModelExtended>;
   deposit: Array<EthereumTransactionModelExtended>;
   repay: Array<EthereumTransactionModelExtended>;
   swapBorrowRateMode: Array<EthereumTransactionModelExtended>;
@@ -1189,6 +1198,10 @@ export type Mutation = {
 
 export type MutationBorrowArgs = {
   data: BorrowInput;
+};
+
+export type MutationLiquidationCallArgs = {
+  data: LiquidationCallInput;
 };
 
 export type MutationDepositArgs = {
@@ -4171,6 +4184,24 @@ export enum UserReserve_OrderBy {
   OriginationFeeLiquidationHistory = 'originationFeeLiquidationHistory',
 }
 
+export type LiquidationCallMutationVariables = {
+  data: LiquidationCallInput;
+};
+
+export type LiquidationCallMutation = { __typename?: 'Mutation' } & {
+  liquidationCall: Array<
+    { __typename?: 'EthereumTransactionModelExtended' } & Pick<
+      EthereumTransactionModelExtended,
+      'txType'
+    > & {
+        tx: { __typename?: 'EthereumTransactionModel' } & Pick<
+          EthereumTransactionModel,
+          'from' | 'to' | 'gas' | 'data' | 'value'
+        >;
+      }
+  >;
+};
+
 export type LiquidatorsQueryVariables = {};
 
 export type LiquidatorsQuery = { __typename?: 'Query' } & {
@@ -4234,6 +4265,57 @@ export type LiquidatorsQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export const LiquidationCallDocument = gql`
+  mutation LiquidationCall($data: LiquidationCallInput!) {
+    liquidationCall(data: $data) {
+      tx {
+        from
+        to
+        gas
+        data
+        value
+      }
+      txType
+    }
+  }
+`;
+
+/**
+ * __useLiquidationCallMutation__
+ *
+ * To run a mutation, you first call `useLiquidationCallMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLiquidationCallMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [liquidationCallMutation, { data, loading, error }] = useLiquidationCallMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useLiquidationCallMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    LiquidationCallMutation,
+    LiquidationCallMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<LiquidationCallMutation, LiquidationCallMutationVariables>(
+    LiquidationCallDocument,
+    baseOptions
+  );
+}
+export type LiquidationCallMutationHookResult = ReturnType<typeof useLiquidationCallMutation>;
+export type LiquidationCallMutationResult = ApolloReactCommon.MutationResult<
+  LiquidationCallMutation
+>;
+export type LiquidationCallMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  LiquidationCallMutation,
+  LiquidationCallMutationVariables
+>;
 export const LiquidatorsDocument = gql`
   query Liquidators {
     reserves {
