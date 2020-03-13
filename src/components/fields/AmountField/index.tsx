@@ -15,6 +15,8 @@ type AmountFieldProps = {
   onChange: (value: string) => void;
   error?: string;
   darkBackground?: boolean;
+  withMaxButton?: boolean;
+  maxButtonClick?: () => void;
 };
 
 export default function AmountField({
@@ -23,6 +25,8 @@ export default function AmountField({
   onChange,
   error,
   darkBackground,
+  withMaxButton,
+  maxButtonClick,
 }: AmountFieldProps) {
   const intl = useIntl();
   const { currentTheme, isDarkMode } = useThemeContext();
@@ -63,7 +67,15 @@ export default function AmountField({
             className="AmountField__input"
           />
 
-          <p className="AmountField__currency">{currency}</p>
+          <div className="AmountField__right-inner">
+            {withMaxButton ? (
+              <button className="AmountField__maxButton" type="button" onClick={maxButtonClick}>
+                MAX
+              </button>
+            ) : (
+              <p className="AmountField__currency">{currency}</p>
+            )}
+          </div>
         </div>
       </div>
 
@@ -88,6 +100,13 @@ export default function AmountField({
           }
           &__error {
             color: ${currentTheme.dangerous.hex};
+          }
+
+          &__maxButton {
+            color: ${currentTheme.secondary.hex};
+            &:hover {
+              color: ${currentTheme.primary.hex};
+            }
           }
         }
         .AmountFieldDark {

@@ -83,6 +83,17 @@ const staticStyles = css.global`
       font-weight: 600;
       width: 100%;
     }
+
+    &__right-inner {
+      position: relative;
+    }
+    &__maxButton {
+      font-size: $medium;
+      font-weight: 600;
+      &:active {
+        transform: scale(0.9);
+      }
+    }
   }
 
   .AmountField__focus {

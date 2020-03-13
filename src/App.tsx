@@ -1,11 +1,7 @@
 import React from 'react';
-import Web3 from 'web3';
-import LendingPoolABI from './ABI/LendingPoolABI';
-import ERC20ABI from './ABI/ERC20ABI';
-import { DataGrid } from './DataGrid';
+import { DataGrid } from 'components/DataGrid';
 
 import css from 'styled-jsx/css';
-import DefaultButton from 'components/DefaultButton';
 
 const staticStyles = css`
   .App {
@@ -23,39 +19,11 @@ const staticStyles = css`
   }
 `;
 
-// let web3: Web3;
-// let coreAddress: string;
-//
-// const connectWallet = async () => {
-//   const currWindow = window as any;
-//
-//   if (currWindow.ethereum) {
-//     web3 = new Web3(currWindow.ethereum);
-//     try {
-//       await currWindow.ethereum.enable();
-//       const poolContract = new web3.eth.Contract(
-//         LendingPoolABI,
-//         '0x398eC7346DcD622eDc5ae82352F02bE94C62d119'
-//       );
-//
-//       coreAddress = await poolContract.methods.core().call();
-//     } catch (e) {}
-//   } else if (currWindow.web3) {
-//     web3 = new Web3(web3.currentProvider);
-//   } else {
-//     alert('You have to install MetaMask !');
-//   }
-// };
-
-const approveTransfer = async (currency: string) => {};
-
-const liquidationCall = async () => {};
-
 function App() {
   return (
     <div className="App">
-      {/*<DefaultButton title="Connect to wallet" onClick={connectWallet} gradientFill={true} />*/}
       <DataGrid />
+
       <style jsx={true}>{staticStyles}</style>
     </div>
   );
