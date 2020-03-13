@@ -32,18 +32,13 @@ export default function LiquidationForm({
   const [collateralReserve, setCollateralReserve] = useState(
     userReserve.user.reservesData[0].reserve.symbol
   );
-  // const [maxAmount, setMaxAmount] = useState(
-  //   userReserve.user.reservesData[0].principalATokenBalance
-  // );
   const [error, setError] = useState('');
 
-  const handleCollateralClick = (event: ChangeEvent<HTMLInputElement>, reserve: any) => {
+  const handleCollateralClick = (event: ChangeEvent<HTMLInputElement>) => {
     setCollateralReserve(event.target.value);
-    // setMaxAmount(reserve.principalATokenBalance);
-    setAmount('');
   };
 
-  const maxAmount = userReserve.principalBorrows;
+  const maxAmount = (userReserve.principalBorrows / 2).toString();
 
   const handleAmountChange = (newAmount: string) => {
     const newAmountValue = new BigNumber(newAmount);
@@ -88,9 +83,7 @@ export default function LiquidationForm({
                 name="Collaterals"
                 value={res.reserve.symbol}
                 checked={collateralReserve === res.reserve.symbol}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleCollateralClick(event, res)
-                }
+                onChange={(event: ChangeEvent<HTMLInputElement>) => handleCollateralClick(event)}
               />
               <label
                 htmlFor={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
