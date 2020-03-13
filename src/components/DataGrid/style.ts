@@ -92,19 +92,6 @@ const staticStyles = css.global`
       @include respond-to(md) {
         font-size: $medium;
       }
-
-      .DataGrid__line {
-        margin-bottom: 15px;
-        h3 {
-          font-size: $large;
-          margin-bottom: 3px;
-        }
-        p {
-          span {
-            font-weight: 600;
-          }
-        }
-      }
     }
 
     &__itemActive {

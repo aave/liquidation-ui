@@ -1,12 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
 import moment from 'moment';
-import { useIntl } from 'react-intl';
 import { formatUserSummaryData } from '@aave/protocol-js';
 import Collapse from '@kunukn/react-collapse';
 import classNames from 'classnames';
 
 import { useThemeContext, rgba } from 'libs/theme-provider';
-import { useLiquidatorsQuery } from '../../apollo/generated';
+import { useLiquidationCallMutation, useLiquidatorsQuery } from '../../apollo/generated';
 import Preloader from 'components/Preloader';
 import LiquidationForm from 'components/LiquidationForm';
 import NoDataPanel from 'components/NoDataPanel';
@@ -20,8 +19,8 @@ function getCurrentTimestamp(): number {
 
 export function DataGrid() {
   const { data, loading } = useLiquidatorsQuery();
+  const [LiquidationCallMutation] = useLiquidationCallMutation();
   const { currentTheme } = useThemeContext();
-  const intl = useIntl();
   const [activeItem, setActiveItem] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [page, setPage] = useState(1);
@@ -86,7 +85,23 @@ export function DataGrid() {
   // functions for liquidation
   const approveTransfer = async (currency: string) => {};
 
-  const liquidationCall = async () => {};
+  const liquidationCall = async (
+    amount: string,
+    collateralReserve: string,
+    userAddress: string,
+    reserveId: string
+  ) => {
+    await LiquidationCallMutation({
+      variables: {
+        data: {
+          userAddress,
+          collateralReserve,
+          purchaseAmount: amount.toString(),
+          reserve: reserveId,
+        },
+      },
+    });
+  };
 
   return (
     <div className="DataGrid">
@@ -149,28 +164,10 @@ export function DataGrid() {
           </button>
 
           <Collapse className="DataGrid__content" isOpen={activeItem === userReserve.user.id}>
-            <div className="DataGrid__line">
-              <h3>Collaterals</h3>
-              {userReserve.user.reservesData.map((res, ii) => (
-                <p key={ii}>
-                  <span>{res.reserve.symbol}</span>:{' '}
-                  {intl.formatNumber(Number(res.principalATokenBalance))}
-                </p>
-              ))}
-            </div>
-
-            <div className="DataGrid__line">
-              <h3>Borrows</h3>
-              <p>
-                <span>{userReserve.reserve.symbol}</span>:{' '}
-                {intl.formatNumber(Number(userReserve.principalBorrows))}
-              </p>
-            </div>
-
             <LiquidationForm
               onSubmit={liquidationCall}
-              maxAmount={userReserve.principalBorrows}
               currencySymbol={userReserve.reserve.symbol}
+              userReserve={userReserve}
             />
           </Collapse>
         </div>
@@ -201,20 +198,6 @@ export function DataGrid() {
             &:after,
             &:before {
               background: ${currentTheme.gray.hex};
-            }
-          }
-
-          &__content {
-            .DataGrid__line {
-              h3 {
-                color: ${currentTheme.gray.hex};
-              }
-              p {
-                color: ${currentTheme.gray.hex};
-                span {
-                  color: ${currentTheme.secondary.hex};
-                }
-              }
             }
           }
 

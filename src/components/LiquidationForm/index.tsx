@@ -1,5 +1,7 @@
-import React, { FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import BigNumber from 'bignumber.js';
+import { useIntl } from 'react-intl';
+import classNames from 'classnames';
 
 import { useThemeContext } from 'libs/theme-provider';
 import AmountField from 'components/fields/AmountField';
@@ -8,20 +10,40 @@ import DefaultButton from 'components/DefaultButton';
 import staticStyles from './style';
 
 interface LiquidationFormProps {
-  onSubmit: (amount: string) => void;
-  maxAmount: string;
+  onSubmit: (
+    amount: string,
+    collateralReserve: string,
+    userAddress: string,
+    reserveId: string
+  ) => void;
   currencySymbol: string;
+  userReserve: any;
 }
 
 export default function LiquidationForm({
   onSubmit,
-  maxAmount,
   currencySymbol,
+  userReserve,
 }: LiquidationFormProps) {
   const { currentTheme } = useThemeContext();
+  const intl = useIntl();
 
   const [amount, setAmount] = useState('');
+  const [collateralReserve, setCollateralReserve] = useState(
+    userReserve.user.reservesData[0].reserve.symbol
+  );
+  // const [maxAmount, setMaxAmount] = useState(
+  //   userReserve.user.reservesData[0].principalATokenBalance
+  // );
   const [error, setError] = useState('');
+
+  const handleCollateralClick = (event: ChangeEvent<HTMLInputElement>, reserve: any) => {
+    setCollateralReserve(event.target.value);
+    // setMaxAmount(reserve.principalATokenBalance);
+    setAmount('');
+  };
+
+  const maxAmount = userReserve.principalBorrows;
 
   const handleAmountChange = (newAmount: string) => {
     const newAmountValue = new BigNumber(newAmount);
@@ -42,7 +64,7 @@ export default function LiquidationForm({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!new BigNumber(amount).isNaN() && amount !== '0') {
-      return onSubmit(amount);
+      return onSubmit(amount, collateralReserve, userReserve.user.id, userReserve.reserve.id);
     }
 
     setError('Please input the correct amount');
@@ -50,23 +72,93 @@ export default function LiquidationForm({
 
   return (
     <form className="LiquidationForm" onSubmit={handleSubmit}>
-      <AmountField
-        currency={currencySymbol}
-        value={amount}
-        onChange={handleAmountChange}
-        error={error}
-        withMaxButton={true}
-        maxButtonClick={handleMaxButtonClick}
-      />
+      <div className="LiquidationForm__top-inner">
+        <div className="LiquidationForm__line">
+          <h3>Collaterals</h3>
+          {userReserve.user.reservesData.map((res: any, i: number) => (
+            <div
+              className={classNames('LiquidationForm__radioField', {
+                LiquidationForm__radioFieldActive: collateralReserve === res.reserve.symbol,
+              })}
+              key={i}
+            >
+              <input
+                type="radio"
+                id={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
+                name="Collaterals"
+                value={res.reserve.symbol}
+                checked={collateralReserve === res.reserve.symbol}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  handleCollateralClick(event, res)
+                }
+              />
+              <label
+                htmlFor={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
+              >
+                <p>
+                  <span>{res.reserve.symbol}</span>
+                  {intl.formatNumber(Number(res.principalATokenBalance))}
+                </p>
+              </label>
+            </div>
+          ))}
+        </div>
 
-      <DefaultButton title="LIQUIDATE" type="submit" />
+        <div className="LiquidationForm__line">
+          <h3>Borrows</h3>
+          <p>
+            <span>{userReserve.reserve.symbol}</span>
+            {intl.formatNumber(Number(userReserve.principalBorrows))}
+          </p>
+        </div>
+      </div>
+
+      <div className="LiquidationForm__bottom-inner">
+        <AmountField
+          currency={currencySymbol}
+          value={amount}
+          onChange={handleAmountChange}
+          error={error}
+          withMaxButton={true}
+          maxButtonClick={handleMaxButtonClick}
+        />
+
+        <DefaultButton
+          title="LIQUIDATE"
+          type="submit"
+          disabled={error !== '' || amount === '' || collateralReserve === ''}
+        />
+      </div>
 
       <style jsx={true} global={true}>
         {staticStyles}
       </style>
       <style jsx={true}>{`
         .LiquidationForm {
-          border-top: 1px solid ${currentTheme.lightGrayBorder.hex};
+          &__bottom-inner {
+            border-top: 1px solid ${currentTheme.lightGrayBorder.hex};
+          }
+
+          &__line {
+            h3 {
+              color: ${currentTheme.gray.hex};
+            }
+            p {
+              color: ${currentTheme.gray.hex};
+              span {
+                color: ${currentTheme.secondary.hex};
+              }
+            }
+          }
+
+          &__radioFieldActive {
+            background: ${currentTheme.backgroundGray.hex};
+            p {
+              span {
+                color: ${currentTheme.primary.hex};
+              }
+            }
+          }
         }
       `}</style>
     </form>
