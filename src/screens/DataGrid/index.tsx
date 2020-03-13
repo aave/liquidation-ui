@@ -14,6 +14,7 @@ import NoDataPanel from 'components/NoDataPanel';
 import SearchField from 'components/fields/SearchField';
 
 import staticStyles from './style';
+import Link from 'components/Link';
 
 function getCurrentTimestamp(): number {
   return Number(moment().format('X'));
@@ -148,7 +149,13 @@ export function DataGrid() {
           >
             <p>
               <span>Address:</span>
-              {userReserve.user.id}
+              <Link
+                to={`https://etherscan.io/address/${userReserve.user.id}`}
+                title={userReserve.user.id}
+                absolute={true}
+                inNewWindow={true}
+                className="DataGrid__link"
+              />
             </p>
             <p>
               <span>Health factor:</span>
@@ -224,6 +231,10 @@ export function DataGrid() {
             .DataGrid__item-button {
               border-bottom: 1px solid ${currentTheme.lightGrayBorder.hex};
             }
+          }
+
+          &__link {
+            color: ${currentTheme.gray.hex};
           }
         }
       `}</style>

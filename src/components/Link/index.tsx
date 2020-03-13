@@ -12,7 +12,7 @@ interface LinkProps {
   color?: 'primary' | 'white';
   className?: string;
   children?: ReactNode;
-  onClick?: () => void;
+  onClick?: any;
   disabled?: boolean;
 }
 
@@ -34,7 +34,7 @@ export default function Link({
     <>
       {!absolute ? (
         <NavLink
-          onClick={(e: any) => !onClick || onClick() || (disabled && e.preventDefault())}
+          onClick={(e: any) => e.stopPropagation()}
           className={classNames('Link', `Link__${color}`, className)}
           to={to}
           {...props}
@@ -44,7 +44,7 @@ export default function Link({
         </NavLink>
       ) : (
         <a
-          onClick={(e: any) => !onClick || onClick() || (disabled && e.preventDefault())}
+          onClick={(e: any) => e.stopPropagation()}
           className={classNames('Link', `Link__${color}`, className)}
           href={to}
           rel={inNewWindow ? 'noopener noreferrer' : undefined}

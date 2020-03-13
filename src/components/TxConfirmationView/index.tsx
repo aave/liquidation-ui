@@ -96,16 +96,16 @@ export default function TxConfirmationView({
     return <Preloader withText={true} darkElementBackground={!sm && preloaderDarkBackground} />;
   }
 
-  const handleApprovalTxExecuted = (txHash: string) =>
-    setTxsData(currentTxsData => {
-      if (currentTxsData.approvalTx && txHash) {
-        return {
-          ...currentTxsData,
-          approvalTx: { ...currentTxsData.approvalTx, executed: true },
-        };
-      }
-      return currentTxsData;
-    });
+  // const handleApprovalTxExecuted = (txHash: string) =>
+  //   setTxsData(currentTxsData => {
+  //     if (currentTxsData.approvalTx && txHash) {
+  //       return {
+  //         ...currentTxsData,
+  //         approvalTx: { ...currentTxsData.approvalTx, executed: true },
+  //       };
+  //     }
+  //     return currentTxsData;
+  //   });
 
   const handleMainTxExecuted = (txHash: string) =>
     setTxsData(currentTxsData => {

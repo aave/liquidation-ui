@@ -37,7 +37,10 @@ export default function LiquidationConfirmation() {
       boxTitle="Liquidation"
       getTransactionsData={liquidationCall}
     >
-      <p><span>Amount: </span>{amount.toString()}</p>
+      <p>
+        <span>Amount: </span>
+        {amount.toString()}
+      </p>
     </TxConfirmationView>
   );
 }
