@@ -37,6 +37,7 @@ export function DataGrid() {
           <div key={i} style={{borderColor: "black"}}>
           BORROWS
           <p>{userReserve.reserve.symbol}: {userReserve.principalBorrows}</p>
+          <h4>HF: {userReserve.user.healthFactor}</h4>
           COLLATERALS
           {userReserve.user.reservesData.map((res, ii) => (
             <p key={ii}>
