@@ -1,11 +1,13 @@
 import React, { ChangeEvent, useState } from 'react';
 import moment from 'moment';
+import { useHistory } from 'react-router';
 import { formatUserSummaryData } from '@aave/protocol-js';
 import Collapse from '@kunukn/react-collapse';
 import classNames from 'classnames';
+import queryString from 'query-string';
 
 import { useThemeContext, rgba } from 'libs/theme-provider';
-import { useLiquidationCallMutation, useLiquidatorsQuery } from '../../apollo/generated';
+import { useLiquidatorsQuery } from '../../apollo/generated';
 import Preloader from 'components/Preloader';
 import LiquidationForm from 'components/LiquidationForm';
 import NoDataPanel from 'components/NoDataPanel';
@@ -19,8 +21,9 @@ function getCurrentTimestamp(): number {
 
 export function DataGrid() {
   const { data, loading } = useLiquidatorsQuery();
-  const [LiquidationCallMutation] = useLiquidationCallMutation();
   const { currentTheme } = useThemeContext();
+  const history = useHistory();
+
   const [activeItem, setActiveItem] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [page, setPage] = useState(1);
@@ -82,26 +85,16 @@ export function DataGrid() {
   };
   const hoverColor = rgba(`${currentTheme.secondary.rgb}, 0.4`);
 
-  // functions for liquidation
-  const approveTransfer = async (currency: string) => {};
-
-  const liquidationCall = async (
+  const handleSubmit = async (
     amount: string,
     collateralReserve: string,
     userAddress: string,
     reserveId: string
   ) => {
-    const result = await LiquidationCallMutation({
-      variables: {
-        data: {
-          userAddress,
-          collateralReserve,
-          purchaseAmount: amount.toString(),
-          reserve: reserveId,
-        },
-      },
-    });
-    return (result && result.data && result.data.liquidationCall) || [];
+    const query = queryString.stringify({ amount });
+    history.push(
+      `/liquidation/${userAddress}/${collateralReserve}/${reserveId}/confirmation?${query}`
+    );
   };
 
   return (
@@ -166,7 +159,7 @@ export function DataGrid() {
 
           <Collapse className="DataGrid__content" isOpen={activeItem === userReserve.user.id}>
             <LiquidationForm
-              onSubmit={liquidationCall}
+              onSubmit={handleSubmit}
               currencySymbol={userReserve.reserve.symbol}
               userReserve={userReserve}
             />

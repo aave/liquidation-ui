@@ -1,5 +1,8 @@
 import React from 'react';
-import { DataGrid } from 'components/DataGrid';
+import { Redirect, Switch, Route } from 'react-router-dom';
+
+import { DataGrid } from './screens/DataGrid';
+import LiquidationConfirmation from './screens/LiquidationConfirmation';
 
 import css from 'styled-jsx/css';
 
@@ -22,7 +25,16 @@ const staticStyles = css`
 function App() {
   return (
     <div className="App">
-      <DataGrid />
+      <Switch>
+        <Route exact={true} path="/" component={DataGrid} />
+        <Route
+          exact={true}
+          path="/liquidation/:userAddress/:collateralReserve/:reserveId/confirmation"
+          component={LiquidationConfirmation}
+        />
+
+        <Redirect to="/" />
+      </Switch>
 
       <style jsx={true}>{staticStyles}</style>
     </div>
