@@ -4248,7 +4248,7 @@ export type LiquidatorsQuery = { __typename?: 'Query' } & {
   >;
   userReserves: Array<
     { __typename?: 'UserReserve' } & Pick<UserReserve, 'principalBorrows'> & {
-        reserve: { __typename?: 'Reserve' } & Pick<Reserve, 'id' | 'symbol'>;
+        reserve: { __typename?: 'Reserve' } & Pick<Reserve, 'id' | 'symbol' | 'decimals'>;
         user: { __typename?: 'User' } & Pick<User, 'id'> & {
             reserves: Array<
               { __typename?: 'UserReserve' } & Pick<
@@ -4379,6 +4379,7 @@ export const LiquidatorsDocument = gql`
       reserve {
         id
         symbol
+        decimals
       }
       user {
         id
