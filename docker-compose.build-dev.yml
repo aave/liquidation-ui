@@ -1,0 +1,9 @@
+version: "3.5"
+
+services:
+  frontend:
+    build:
+      args:
+        REACT_APP_SUPPORTED_ETHEREUM_NETWORKS: "kovan,ropsten,mainnet"
+        REACT_APP_DEFAULT_ETHEREUM_NETWORK: "ropsten"
+        NGINX_MODE: "staging"

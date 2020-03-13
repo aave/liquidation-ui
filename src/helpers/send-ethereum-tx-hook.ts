@@ -1,8 +1,29 @@
 import { useState } from 'react';
 import { TransactionReceipt, TransactionConfig } from 'web3-eth';
 
-import { useWeb3Context } from 'libs/web3-data-provider';
-import { EthereumTransactionModel } from 'libs/pool-data-provider/graphql';
+import { useWeb3Context } from '../web3-data-provider';
+
+export type Maybe<T> = T | null;
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+  Bytes: string;
+  BigDecimal: string;
+  BigInt: string;
+};
+
+export type EthereumTransactionModel = {
+  __typename?: 'EthereumTransactionModel';
+  from: Scalars['String'];
+  to: Scalars['String'];
+  data?: Maybe<Scalars['String']>;
+  gas?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
 
 interface SendEthTransactionData {
   loading: boolean;

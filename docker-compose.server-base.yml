@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+  frontend:
+    image: ${CI_REGISTRY_IMAGE}/${BUILD_MODE}:${CI_COMMIT_SHA}
+    deploy:
+      restart_policy:
+        condition: on-failure
+      labels:
+        traefik.frontend.rule: "Host:${DOMAIN},www.${DOMAIN}"
+        traefik.frontend.redirect.regex: "^https?://www.${DOMAIN}/(.*)"
+        traefik.frontend.redirect.replacement: "https://${DOMAIN}/$${1}"
+        traefik.frontend.headers.frameDeny: "true"
+        traefik.frontend.headers.referrerPolicy: "strict-origin-when-cross-origin"
+        traefik.port: "80"

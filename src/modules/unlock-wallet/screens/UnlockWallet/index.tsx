@@ -15,8 +15,8 @@ import coinbaseIcon from './images/coinbaseIcon.svg';
 import formaticIcon from './images/formaticIcon.svg';
 
 interface UnlockWalletProps {
-  unlockExternalWallet: (providerName: AvailableWeb3Provider, network: string) => void;
-  defaultNetwork: string;
+  unlockExternalWallet: (providerName: AvailableWeb3Provider, network: 'mainnet') => void;
+  defaultNetwork: 'mainnet';
 }
 
 export default function UnlockWallet({ unlockExternalWallet, defaultNetwork }: UnlockWalletProps) {

@@ -1,12 +1,10 @@
-import { SupportedNetworks } from '../../../config';
-
 import { getWeb3ProviderFromBrowser } from './browser-wallet';
 import { getWalletLinkProvider } from './wallet-link';
 import { getFortmaticProvider, logoutFortmatic } from './fortmatic';
 
 export type AvailableWeb3Provider = 'browser' | 'formatic' | 'wallet-link';
 
-export const getProviderByName = (name: AvailableWeb3Provider, network: SupportedNetworks) => {
+export const getProviderByName = (name: AvailableWeb3Provider, network: string) => {
   switch (name) {
     case 'browser':
       return getWeb3ProviderFromBrowser();

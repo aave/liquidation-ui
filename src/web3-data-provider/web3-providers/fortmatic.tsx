@@ -1,4 +1,4 @@
-import { getNetworkConfig, SupportedNetworks } from '../../../config';
+import { getNetworkConfig, SupportedNetworks } from '../../config';
 
 const Fortmatic = require('fortmatic');
 

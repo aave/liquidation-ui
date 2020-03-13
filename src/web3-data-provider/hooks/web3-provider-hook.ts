@@ -4,7 +4,7 @@ import {
   getWeb3State,
   isWeb3ContextInitialized,
   listenForWalletLockingStateChange,
-} from '../../helpers/web3-helpers';
+} from 'helpers/web3-helpers';
 import { AvailableWeb3Provider, getProviderByName, logoutFromProvider } from '../web3-providers';
 
 type web3ProviderHookOutput = [

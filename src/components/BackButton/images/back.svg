@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <g id="Group_10123" data-name="Group 10123" transform="translate(-280 -31)">
+    <g id="Ellipse_764" fill="#fff" stroke="#2ebac6" data-name="Ellipse 764" transform="translate(280 31)">
+      <circle cx="10" cy="10" r="10" stroke="none"/>
+      <circle cx="10" cy="10" r="9.5" fill="none"/>
+    </g>
+    <g id="Back_arrow" data-name="Back arrow" transform="translate(284.67 36.33)">
+      <rect id="line" width="10.67" height="1" fill="#2ebac6" rx=".5" transform="translate(.2 4.22)"/>
+      <rect id="line-2" width="6.67" height="1" fill="#2ebac6" data-name="line" rx=".5" transform="rotate(45 -4.47 2.85)"/>
+      <rect id="line-3" width="6.67" height="1" fill="#2ebac6" data-name="line" rx=".5" transform="rotate(-45 5.69 2.36)"/>
+    </g>
+  </g>
+</svg>

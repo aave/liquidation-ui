@@ -1,0 +1,16 @@
+version: "3.5"
+
+networks:
+  traefik:
+    external: true
+
+services:
+  frontend:
+    deploy:
+      labels:
+        traefik.docker.network: "traefik"
+      placement:
+        constraints:
+          - node.labels.type == production
+    networks:
+      - traefik

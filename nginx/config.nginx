@@ -1,0 +1,35 @@
+user  nginx;
+worker_processes  1;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  include /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+  client_max_body_size 100m;
+
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+  '$status $body_bytes_sent "$http_referer" '
+  '"$http_user_agent" "$http_x_forwarded_for"';
+
+  access_log  /var/log/nginx/access.log  main; # mapped to stdout/stderr
+  sendfile on;
+  tcp_nopush on;
+  keepalive_timeout 65;
+  gzip  on;
+  charset utf-8;
+  proxy_read_timeout 1000s;
+
+  server {
+    listen  80;
+    charset utf-8;
+    root    /server_root/;
+
+    location / {
+      index index.html;
+      try_files $uri $uri/ /index.html;
+    }
+  }
+}

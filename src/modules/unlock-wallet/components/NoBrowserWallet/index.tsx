@@ -2,8 +2,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 import { useThemeContext } from 'libs/theme-provider';
-import WarningArea from '../../../../../components/WarningArea';
-import Link from '../../../../../components/Link';
+import WarningArea from 'components/WarningArea';
+import Link from 'components/Link';
 
 import messages from './messages';
 import staticStyles from './style';

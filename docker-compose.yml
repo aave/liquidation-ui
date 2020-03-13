@@ -1,0 +1,32 @@
+version: "3.5"
+
+x-base-ethereum-environment: &base-ethereum-environment
+  REACT_APP_MUTATIONS_API_URL_ROPSTEN: "https://dlp-api-dev.testing.aave.com/graphql"
+  REACT_APP_QUERY_API_URL_ROPSTEN: "https://api.thegraph.com/subgraphs/name/aave/protocol-ropsten-raw"
+  REACT_APP_WS_API_URL_ROPSTEN: "wss://api.thegraph.com/subgraphs/name/aave/protocol-ropsten-raw"
+  REACT_APP_ETHEREUM_JSONRPC_URL_ROPSTEN: "https://ropsten.infura.io/v3/61fbbc90280f42ed91ab97e3c5875702"
+  REACT_APP_FORTMATIC_PRODUCT_KEY_ROPSTEN: "pk_test_16F348674B0878B8"
+  REACT_APP_WALLET_BALANCE_PROVIDER_ADDRESS_ROPSTEN: "0x48aaf41e702681c7926E8362Af4cb2b82e61056c"
+
+  REACT_APP_MUTATIONS_API_URL_KOVAN: "https://dlp-api-dev-kovan.testing.aave.com/graphql"
+  REACT_APP_QUERY_API_URL_KOVAN: "https://api.thegraph.com/subgraphs/name/aave/protocol-kovan"
+  REACT_APP_WS_API_URL_KOVAN: "wss://api.thegraph.com/subgraphs/name/aave/protocol-kovan"
+  REACT_APP_ETHEREUM_JSONRPC_URL_KOVAN: "https://kovan-node.ethlend.io"
+  REACT_APP_FORTMATIC_PRODUCT_KEY_KOVAN: "pk_test_16F348674B0878B8"
+  REACT_APP_WALLET_BALANCE_PROVIDER_ADDRESS_KOVAN: "0x5127ee6dd23e16d91DBF232Be3966cf2E6a646d9"
+
+  REACT_APP_MUTATIONS_API_URL_MAINNET: "https://protocol-api.aave.com/graphql"
+  REACT_APP_QUERY_API_URL_MAINNET: "https://api.thegraph.com/subgraphs/name/aave/protocol-raw"
+  REACT_APP_WS_API_URL_MAINNET: "wss://api.thegraph.com/subgraphs/name/aave/protocol-raw"
+  REACT_APP_ETHEREUM_JSONRPC_URL_MAINNET: "https://main-node.ethlend.io"
+  REACT_APP_FORTMATIC_PRODUCT_KEY_MAINNET: "pk_live_83091B62BB160D19"
+  REACT_APP_WALLET_BALANCE_PROVIDER_ADDRESS_MAINNET: "0x0D4d9313bD7e99F074d93305f5e4eee8e20c3594"
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        <<: *base-ethereum-environment
+    environment:
+      <<: *base-ethereum-environment

@@ -1,0 +1,11 @@
+node_modules
+server
+.expo
+codegen.yml
+schema.graphql
+docker-compose.*yml
+.gitlab-ci.yml
+.gitignore
+.graphqlconfig
+client-schema.graphql
+.editorconfig

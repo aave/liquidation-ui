@@ -1,6 +1,6 @@
 import WalletLink from 'walletlink';
 import { mapNameToChainID } from 'helpers/web3-helpers';
-import { getNetworkConfig, SupportedNetworks } from '../../../config';
+import { getNetworkConfig, SupportedNetworks } from '../../config';
 
 const APP_NAME = 'Aave';
 const APP_LOGO_URL = 'https://testnet.aave.com/favicon.ico';

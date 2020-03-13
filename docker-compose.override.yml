@@ -1,0 +1,14 @@
+version: "3.5"
+
+services:
+  frontend:
+    image: node:13
+    command: npm run start
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      REACT_APP_SUPPORTED_ETHEREUM_NETWORKS: "kovan,ropsten,mainnet"
+      REACT_APP_DEFAULT_ETHEREUM_NETWORK: "ropsten"
+    ports:
+      - "11000:3000"
