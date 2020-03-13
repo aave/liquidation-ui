@@ -5,6 +5,23 @@ import Web3 from "web3";
 import LendingPoolABI from "./ABI/LendingPoolABI";
 import ERC20ABI from "./ABI/ERC20ABI";
 import { DataGrid } from './DataGrid';
+import css from 'styled-jsx/css';
+
+const staticStyles = css`
+  .App {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    height: 1px;
+    &__content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+`;
 
 
 let web3: Web3;
@@ -45,6 +62,7 @@ function App() {
         <button onClick={connectWallet}>Connect to wallet</button>
         <DataGrid/>
       </header>
+      <style jsx={true}>{staticStyles}</style>
     </div>
   );
 }

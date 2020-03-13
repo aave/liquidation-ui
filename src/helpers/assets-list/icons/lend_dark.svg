@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="LEND_dark" viewBox="0 0 50 50">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.217" x2="0.943" y1="0.867" y2="0.217" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#01aec9"/>
+      <stop offset="1" stop-color="#1e8fca"/>
+    </linearGradient>
+    <style>
+      .cls-2{fill:#fff}
+    </style>
+  </defs>
+  <g id="Group_3982" data-name="Group 3982">
+    <g id="Group_1368" data-name="Group 1368">
+      <circle id="XMLID_5_" cx="25" cy="25" r="25" fill="url(#linear-gradient)"/>
+    </g>
+    <g id="XMLID_2_" transform="translate(14.002 6.851)">
+      <path id="XMLID_4_" d="M450.38 134.856l-3.061-3.056-10.219 10.218 10.218 10.224 3.061-3.061-7.162-7.162z" class="cls-2" transform="translate(-428.384 -131.8)"/>
+      <path id="XMLID_3_" d="M282.68 447.124L272.461 436.9l-3.061 3.061 7.162 7.162-7.162 7.162 3.061 3.056z" class="cls-2" transform="translate(-269.4 -421.043)"/>
+    </g>
+    <path id="XMLID_1_" d="M0 0h14.454v4.309H0z" class="cls-2" transform="rotate(45 -11.4596 35.0293)"/>
+  </g>
+</svg>

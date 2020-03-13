@@ -9,7 +9,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.30",
+    "@types/classnames": "^2.2.10",
     "@types/node-fetch": "^2.5.5",
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
@@ -31,7 +31,17 @@
     "react-scripts": "3.4.0",
     "typescript": "^3.7.5",
     "web3": "^1.2.6",
-    "walletlink": "^1.0.0"
+    "walletlink": "^1.0.0",
+    "classnames": "^2.2.6",
+    "customize-cra": "^0.9.1",
+    "styled-jsx": "^3.2.4",
+    "styled-jsx-plugin-sass": "^1.0.0",
+    "@types/styled-jsx": "^2.2.8",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "react-intl": "^4.1.1",
+    "react-app-rewired": "^2.1.5",
+    "react-intl-auto": "^0.0.3",
+    "babel-plugin-react-intl-auto": "^3.1.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.11.2",
@@ -40,9 +50,9 @@
     "@graphql-codegen/typescript-react-apollo": "^1.11.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "gql-gen": "graphql-codegen --config codegen.yml"
   },

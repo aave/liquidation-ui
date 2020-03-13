@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.976 41.683">
+  <defs>
+    <style>
+      .cls-1,.cls-3{fill:#3b3735;stroke:#f1f1f3;stroke-width:.5px}.cls-3{fill:#959190}
+    </style>
+  </defs>
+  <g id="ETH_dark" transform="translate(-820.796 -1587.101)">
+    <path id="Path_2995" d="M155.4 43.633v9.889L167.628 36.3z" class="cls-1" data-name="Path 2995" transform="translate(678.94 1574.478)"/>
+    <path id="Path_2996" d="M167.184 35.356L155.4 15.8v14.222z" class="cls-1" data-name="Path 2996" transform="translate(678.94 1572.2)"/>
+    <path id="Path_2997" fill="#1f1d19" stroke="#f1f1f3" stroke-width=".5px" d="M834.34 1603.333v12.111l11.673-6.778z" data-name="Path 2997"/>
+    <path id="Path_2998" d="M143.8 35.356L155.584 15.8v14.222z" class="cls-3" data-name="Path 2998" transform="translate(677.644 1572.2)"/>
+    <path id="Path_2999" fill="#403c3a" stroke="#f1f1f3" stroke-width=".5px" d="M833.228 1603.333v12.111l-11.672-6.778z" data-name="Path 2999"/>
+    <path id="Path_3000" d="M155.628 43.633v9.889L143.4 36.3z" class="cls-3" data-name="Path 3000" transform="translate(677.6 1574.478)"/>
+  </g>
+</svg>

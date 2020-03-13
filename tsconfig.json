@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -20,6 +21,7 @@
     "jsx": "react"
   },
   "include": [
-    "src"
+    "src",
+    "node_modules/babel-plugin-react-intl-auto/**/*.d.ts"
   ]
 }
