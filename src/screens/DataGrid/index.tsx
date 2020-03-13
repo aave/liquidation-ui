@@ -32,11 +32,12 @@ export function DataGrid() {
   if (loading) {
     return <Preloader />;
   }
-  if (!data?.userReserves || !data.reserves) {
+  if (!data?.userReserves || !data.reserves || !data.priceOracle) {
     return <NoDataPanel title="No data" />;
   }
 
   const reserves = data.reserves;
+  const usdPriceEth = data.priceOracle.usdPriceEth
   const userReserves = data.userReserves
     .map(userReserve => {
       return {
@@ -45,7 +46,7 @@ export function DataGrid() {
           reserves,
           userReserve.user.reserves,
           userReserve.user.id,
-          120,
+          usdPriceEth,
           getCurrentTimestamp()
         ),
       };

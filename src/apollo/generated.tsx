@@ -4184,6 +4184,16 @@ export enum UserReserve_OrderBy {
   OriginationFeeLiquidationHistory = 'originationFeeLiquidationHistory',
 }
 
+export type EthTransactionFragment = { __typename?: 'EthereumTransactionModelExtended' } & Pick<
+  EthereumTransactionModelExtended,
+  'txType'
+> & {
+    tx: { __typename?: 'EthereumTransactionModel' } & Pick<
+      EthereumTransactionModel,
+      'from' | 'to' | 'gas' | 'data' | 'value'
+    >;
+  };
+
 export type LiquidationCallMutationVariables = {
   data: LiquidationCallInput;
 };
@@ -4205,6 +4215,7 @@ export type LiquidationCallMutation = { __typename?: 'Mutation' } & {
 export type LiquidatorsQueryVariables = {};
 
 export type LiquidatorsQuery = { __typename?: 'Query' } & {
+  priceOracle: Maybe<{ __typename?: 'PriceOracle' } & Pick<PriceOracle, 'usdPriceEth'>>;
   reserves: Array<
     { __typename?: 'Reserve' } & Pick<
       Reserve,
@@ -4265,6 +4276,18 @@ export type LiquidatorsQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export const EthTransactionFragmentDoc = gql`
+  fragment EthTransaction on EthereumTransactionModelExtended {
+    tx {
+      from
+      to
+      gas
+      data
+      value
+    }
+    txType
+  }
+`;
 export const LiquidationCallDocument = gql`
   mutation LiquidationCall($data: LiquidationCallInput!) {
     liquidationCall(data: $data) {
@@ -4318,6 +4341,9 @@ export type LiquidationCallMutationOptions = ApolloReactCommon.BaseMutationOptio
 >;
 export const LiquidatorsDocument = gql`
   query Liquidators {
+    priceOracle(id: 1) {
+      usdPriceEth
+    }
     reserves {
       id
       name
@@ -4356,7 +4382,7 @@ export const LiquidatorsDocument = gql`
       }
       user {
         id
-        reserves(where: { principalATokenBalance_gt: 0 }) {
+        reserves {
           principalATokenBalance
           userBalanceIndex
           redirectedBalance

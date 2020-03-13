@@ -1,4 +1,7 @@
 query Liquidators {
+  priceOracle(id: 1) {
+    usdPriceEth
+  }
   reserves {
     id
     name
@@ -37,7 +40,7 @@ query Liquidators {
     }
     user {
       id
-      reserves(where: {principalATokenBalance_gt: 0}) {
+      reserves {
         principalATokenBalance
         userBalanceIndex
         redirectedBalance
