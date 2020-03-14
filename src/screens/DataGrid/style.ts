@@ -26,20 +26,17 @@ const staticStyles = css.global`
     &__item-button {
       width: 100%;
       text-align: left;
-      padding: 15px 50px 15px 20px;
-      font-size: $regular;
+      padding: 12px 50px 12px 10px;
+      font-size: $medium;
       position: relative;
       display: flex;
       flex-wrap: wrap;
-      @include respond-to(md) {
-        font-size: $medium;
-        padding: 12px 50px 12px 20px;
-      }
       p {
         word-break: break-all;
-        flex: 2;
-        &:last-child {
-          flex: 1;
+        flex: 1;
+        padding: 0 10px;
+        &:first-child {
+          flex: 2;
         }
         @include respond-to(sm) {
           width: 100%;
@@ -52,6 +49,11 @@ const staticStyles = css.global`
         span {
           display: block;
           font-weight: 600;
+        }
+        a {
+          span {
+            font-weight: 400;
+          }
         }
       }
     }
