@@ -58,7 +58,7 @@ export function DataGrid() {
         userReserve.user.id.toLowerCase().includes(searchValue.toLowerCase())
     );
 
-  const pageSize = 10;
+  const pageSize = 20;
   const lastPage =
     Math.round(userReserves.length / pageSize) !== 0
       ? Math.round(userReserves.length / pageSize)
