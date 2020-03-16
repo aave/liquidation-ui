@@ -9,7 +9,7 @@ export function getApolloClient(): ApolloClient<NormalizedCacheObject> {
   const queryLink = new HttpLink({ uri: 'https://api.thegraph.com/subgraphs/name/aave/protocol-raw' });
 
   // depending on what kind of operation is being sent
-  const mutationsLink = new HttpLink({ uri: 'https://protocol-api.aave.com/graphql' });
+  const mutationsLink = new HttpLink({ uri: 'http://localhost:5000/graphql' });
   // using the ability to split links, you can send data to each link
   const hybridLink = split(
     // split based on operation type

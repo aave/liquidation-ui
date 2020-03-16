@@ -36,7 +36,8 @@ export default function LiquidationForm({
     setCollateralReserve(event.target.value);
   };
 
-  const maxAmount = (userReserve.principalBorrows / 2).toString();
+  const principalBorrowsUnit = new BigNumber(10).pow(userReserve.reserve.decimals)
+  const maxAmount = new BigNumber(userReserve.principalBorrows).div(principalBorrowsUnit.times(2)).toString();
 
   const handleAmountChange = (newAmount: string) => {
     const newAmountValue = new BigNumber(newAmount);
@@ -57,6 +58,7 @@ export default function LiquidationForm({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!new BigNumber(amount).isNaN() && amount !== '0') {
+      
       return onSubmit(amount, collateralReserve, userReserve.user.id, userReserve.reserve.id);
     }
 
@@ -68,7 +70,9 @@ export default function LiquidationForm({
       <div className="LiquidationForm__top-inner">
         <div className="LiquidationForm__line">
           <h3>Collaterals</h3>
-          {userReserve.user.reservesData.map((res: any, i: number) => (
+          {userReserve.user.reservesData.filter((item : any) => new BigNumber(item.principalATokenBalance).gt(0) && item.usageAsCollateralEnabledOnUser).map((res: any, i: number) => {
+
+            return(
             <div
               className={classNames('LiquidationForm__radioField', {
                 LiquidationForm__radioFieldActive: collateralReserve === res.reserve.id,
@@ -88,18 +92,18 @@ export default function LiquidationForm({
               >
                 <p>
                   <span>{res.reserve.symbol}</span>
-                  {intl.formatNumber(Number(res.principalATokenBalance))}
+                  {new BigNumber(res.principalATokenBalance).toFixed(res.reserve.decimals)}
                 </p>
               </label>
             </div>
-          ))}
+          )})}
         </div>
 
         <div className="LiquidationForm__line">
           <h3>Borrows</h3>
           <p>
             <span>{userReserve.reserve.symbol}</span>
-            {intl.formatNumber(Number(userReserve.principalBorrows))}
+            {new BigNumber(userReserve.principalBorrows).div(principalBorrowsUnit).toFixed(18)}
           </p>
         </div>
       </div>

@@ -20,6 +20,7 @@ export default function LiquidationConfirmation() {
   }
 
   const liquidationCall = async () => {
+    console.log("Amount to liquidate: ", amount.toString())
     const result = await LiquidationCallMutation({
       variables: {
         data: {
