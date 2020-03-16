@@ -6,7 +6,7 @@ const staticStyles = css.global`
   @import 'src/_mixins/screen-size';
 
   .DataGrid {
-    padding: 5px 15%;
+    padding: 5px 5%;
     position: relative;
     @include respond-to(lg) {
       padding: 5px 8px;
@@ -57,69 +57,27 @@ const staticStyles = css.global`
         }
       }
     }
-    &__arrows {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      right: 20px;
-      top: 17px;
-      border-width: 1px;
-      border-style: solid;
-      transition: all 0.3s ease;
-      @include respond-to(md) {
-        top: 12px;
-      }
-      &:after,
-      &:before {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 45%;
-        transform: translate(-50%);
-        height: 2px;
-        width: 10px;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-      }
-      &:after {
-        transform: translate(-50%) rotate(90deg);
-      }
-    }
 
     &__content {
-      transition: height 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 0 20px;
+      padding: 20px 0;
       position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
       @include respond-to(md) {
         font-size: $medium;
       }
     }
+    &__table-inner {
+      flex: 1;
+      margin-right: 40px;
+    }
+    &__form-inner {
+      width: 340px;
+    }
 
     &__itemActive {
-      padding-bottom: 15px;
-      .DataGrid__item-button {
-        margin-bottom: 10px;
-        &:after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 1px;
-          width: 100%;
-          z-index: 1;
-        }
-      }
-
-      .DataGrid__arrows {
-        &:after {
-          transform: translate(-50%);
-        }
-      }
-
-      .DataGrid__content {
-        padding-bottom: 10px;
-      }
+      cursor: default;
     }
 
     &__navigation-inner {

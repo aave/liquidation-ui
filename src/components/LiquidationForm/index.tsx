@@ -16,15 +16,10 @@ interface LiquidationFormProps {
     userAddress: string,
     reserveId: string
   ) => void;
-  currencySymbol: string;
   userReserve: any;
 }
 
-export default function LiquidationForm({
-  onSubmit,
-  currencySymbol,
-  userReserve,
-}: LiquidationFormProps) {
+export default function LiquidationForm({ onSubmit, userReserve }: LiquidationFormProps) {
   const { currentTheme } = useThemeContext();
   const intl = useIntl();
 
@@ -106,7 +101,7 @@ export default function LiquidationForm({
 
       <div className="LiquidationForm__bottom-inner">
         <AmountField
-          currency={currencySymbol}
+          currency={userReserve.reserve.symbol}
           value={amount}
           onChange={handleAmountChange}
           error={error}
