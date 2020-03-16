@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, memo } from 'react';
 import { useHistory } from 'react-router';
 import classNames from 'classnames';
 import queryString from 'query-string';
@@ -19,7 +19,7 @@ function getCurrentTimestamp(): number {
   return Number(moment().format('X'));
 }
 
-export function DataGrid() {
+function DataGrid() {
   const { data, loading } = useLiquidatorsQuery();
   const { currentTheme } = useThemeContext();
   const history = useHistory();
@@ -242,3 +242,5 @@ export function DataGrid() {
     </div>
   );
 }
+
+export default memo(DataGrid);
