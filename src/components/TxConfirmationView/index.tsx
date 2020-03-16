@@ -96,16 +96,16 @@ export default function TxConfirmationView({
     return <Preloader withText={true} darkElementBackground={!sm && preloaderDarkBackground} />;
   }
 
-  // const handleApprovalTxExecuted = (txHash: string) =>
-  //   setTxsData(currentTxsData => {
-  //     if (currentTxsData.approvalTx && txHash) {
-  //       return {
-  //         ...currentTxsData,
-  //         approvalTx: { ...currentTxsData.approvalTx, executed: true },
-  //       };
-  //     }
-  //     return currentTxsData;
-  //   });
+  const handleApprovalTxExecuted = (txHash: string) =>
+    setTxsData(currentTxsData => {
+      if (currentTxsData.approvalTx && txHash) {
+        return {
+          ...currentTxsData,
+          approvalTx: { ...currentTxsData.approvalTx, executed: true },
+        };
+      }
+      return currentTxsData;
+    });
 
   const handleMainTxExecuted = (txHash: string) =>
     setTxsData(currentTxsData => {
@@ -164,15 +164,15 @@ export default function TxConfirmationView({
 
         {(!blockingError || (txsData.transferTx && txsData.transferTx.executed)) && (
           <>
-            {/*{txsData.approvalTx && (*/}
-            {/*  <TxExecutionBox*/}
-            {/*    title={intl.formatMessage(messages.approve)}*/}
-            {/*    txData={txsData.approvalTx.data.tx}*/}
-            {/*    onExecution={handleApprovalTxExecuted}*/}
-            {/*    disableOnSuccess={true}*/}
-            {/*    disabled={!!blockingError || txsData.approvalTx.executed}*/}
-            {/*  />*/}
-            {/*)}*/}
+            {txsData.approvalTx && (
+              <TxExecutionBox
+                title={intl.formatMessage(messages.approve)}
+                txData={txsData.approvalTx.data.tx}
+                onExecution={handleApprovalTxExecuted}
+                disableOnSuccess={true}
+                disabled={!!blockingError || txsData.approvalTx.executed}
+              />
+            )}
 
             {txsData.transferTx && (
               <TxExecutionBox
@@ -182,7 +182,12 @@ export default function TxConfirmationView({
                 onConfirmation={handleMainTxConfirmed}
                 successButtonTitle={successButtonTitle}
                 goToAfterSuccess={goToAfterSuccess}
-                disabled={!!blockingError}
+                disabled={
+                  !!blockingError ||
+                  (txsData.approvalTx &&
+                    !txsData.approvalTx.executed &&
+                    !txsData.transferTx.executed)
+                }
               />
             )}
           </>

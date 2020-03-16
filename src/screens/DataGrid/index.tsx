@@ -51,6 +51,7 @@ export function DataGrid() {
         ),
       };
     })
+    .sort((a: any, b: any) => a.user.healthFactor - b.user.healthFactor)
     .filter(
       userReserve =>
         Number(userReserve.user.healthFactor) < 1 &&
@@ -143,7 +144,7 @@ export function DataGrid() {
             onClick={() => onToggle(userReserve.user.id)}
           >
             <p>
-              <span>Address:</span>
+              <span>Address</span>
               <Link
                 to={`https://etherscan.io/address/${userReserve.user.id}`}
                 title={userReserve.user.id}
@@ -153,8 +154,16 @@ export function DataGrid() {
               />
             </p>
             <p>
-              <span>Health factor:</span>
+              <span>Health factor</span>
               {userReserve.user.healthFactor}
+            </p>
+            <p>
+              <span>Total Borrows (ETH)</span>
+              {userReserve.user.totalBorrowsWithFeesETH}
+            </p>
+            <p>
+              <span>Total Collateral (ETH)</span>
+              {userReserve.user.totalCollateralETH}
             </p>
             <div className="DataGrid__arrows" />
           </button>
