@@ -16,6 +16,7 @@ export interface SearchFieldProps {
   onChange: (value: string) => void;
   className?: string;
   placeholder?: string;
+  additionalFunctionOnChange?: any;
 }
 
 export default function SearchField({
@@ -23,6 +24,7 @@ export default function SearchField({
   onChange,
   className,
   placeholder,
+  additionalFunctionOnChange,
   ...props
 }: SearchFieldProps) {
   const intl = useIntl();
@@ -48,6 +50,7 @@ export default function SearchField({
       <BasicField
         value={value}
         onChange={onChange}
+        additionalFunctionOnChange={additionalFunctionOnChange}
         placeholder={placeholder || intl.formatMessage(messages.placeholder)}
         type="search"
         {...props}

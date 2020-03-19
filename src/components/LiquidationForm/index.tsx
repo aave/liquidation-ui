@@ -10,12 +10,7 @@ import DefaultButton from 'components/DefaultButton';
 import staticStyles from './style';
 
 interface LiquidationFormProps {
-  onSubmit: (
-    amount: string,
-    collateralReserve: string,
-    userAddress: string,
-    reserveId: string
-  ) => void;
+  onSubmit: (amount: string, collateralReserve: string, reserveId: string, symbol: string) => void;
   userReserve: any;
 }
 
@@ -52,7 +47,12 @@ export default function LiquidationForm({ onSubmit, userReserve }: LiquidationFo
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!new BigNumber(amount).isNaN() && amount !== '0') {
-      return onSubmit(amount, collateralReserve, userReserve.user.id, userReserve.reserve.id);
+      return onSubmit(
+        amount,
+        collateralReserve,
+        userReserve.reserve.id,
+        userReserve.reserve.symbol
+      );
     }
 
     setError('Please input the correct amount');

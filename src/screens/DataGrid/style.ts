@@ -66,14 +66,21 @@ const staticStyles = css.global`
       justify-content: space-between;
       @include respond-to(md) {
         font-size: $medium;
+        flex-direction: column-reverse;
       }
     }
     &__table-inner {
       flex: 1;
       margin-right: 40px;
+      @include respond-to(md) {
+        margin-right: 0;
+      }
     }
     &__form-inner {
       width: 340px;
+      @include respond-to(md) {
+        margin: 0 auto 40px;
+      }
     }
 
     &__itemActive {

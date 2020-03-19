@@ -2,68 +2,39 @@ import React, { ChangeEvent, useState, memo } from 'react';
 import { useHistory } from 'react-router';
 import classNames from 'classnames';
 import queryString from 'query-string';
-import moment from 'moment';
 
 import { useThemeContext, rgba } from 'libs/theme-provider';
-import { useLiquidatorsQuery } from '../../apollo/generated';
 import LiquidationForm from 'components/LiquidationForm';
 import SearchField from 'components/fields/SearchField';
 import Link from 'components/Link';
-import Preloader from 'components/Preloader';
-import NoDataPanel from 'components/NoDataPanel';
-import { formatUserSummaryData } from '@aave/protocol-js';
 
 import staticStyles from './style';
 
-function getCurrentTimestamp(): number {
-  return Number(moment().format('X'));
+interface DataGridProps {
+  searchValue: string;
+  setSearchValue: any;
+  userReserves: any;
 }
 
-function DataGrid() {
-  const { data, loading } = useLiquidatorsQuery();
+function DataGrid({ searchValue, setSearchValue, userReserves }: DataGridProps) {
   const { currentTheme } = useThemeContext();
   const history = useHistory();
 
   const [activeItem, setActiveItem] = useState('');
   const [activeFormData, setActiveFormData] = useState(undefined);
   const [page, setPage] = useState(1);
-  const [searchValue, setSearchValue] = useState('');
 
-  if (loading) {
-    return <Preloader />;
-  }
-  if (!data?.userReserves || !data.reserves || !data.priceOracle) {
-    return <NoDataPanel title="No data" />;
-  }
-
-  const reserves = data.reserves;
-  const usdPriceEth = data.priceOracle.usdPriceEth;
-  const userReserves = data.userReserves
-    .map(userReserve => {
-      return {
-        ...userReserve,
-        user: formatUserSummaryData(
-          reserves,
-          userReserve.user.reserves,
-          userReserve.user.id,
-          usdPriceEth,
-          getCurrentTimestamp()
-        ),
-      };
-    })
-    .sort((a: any, b: any) => a.user.healthFactor - b.user.healthFactor)
-    .filter(
-      userReserve =>
-        Number(userReserve.user.healthFactor) < 1 &&
-        userReserve.user.id.toLowerCase().includes(searchValue.toLowerCase())
-    );
-
-  const pageSize = 20;
+  const pageSize = 10;
   const lastPage =
     Math.round(userReserves.length / pageSize) !== 0
       ? Math.round(userReserves.length / pageSize)
       : 1;
   const userReservesPagination = userReserves.slice((page - 1) * pageSize, page * pageSize);
+
+  const setEmptyItem = () => {
+    setActiveItem('');
+    setActiveFormData(undefined);
+  };
 
   const handlePageButtonClick = (type: 'prev' | 'next') => {
     if (type === 'next') {
@@ -71,6 +42,7 @@ function DataGrid() {
     } else {
       setPage(page - 1);
     }
+    setEmptyItem();
   };
   const pageGoTo = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -81,20 +53,27 @@ function DataGrid() {
         ? lastPage
         : Number(event.target.value)
     );
+    setEmptyItem();
   };
 
   const onToggle = (userId: string, reserveId: string) => {
     setActiveItem(`${userId}${reserveId}`);
     const formData = userReserves.find(
-      userReserve => `${userId}${reserveId}` === `${userReserve.user.id}${userReserve.reserve.id}`
+      (userReserve: any) =>
+        `${userId}${reserveId}` === `${userReserve.user.id}${userReserve.reserve.id}`
     );
     // @ts-ignore
     setActiveFormData(formData);
   };
   const hoverColor = rgba(`${currentTheme.secondary.rgb}, 0.4`);
 
-  const handleSubmit = async (amount: string, collateralReserve: string, reserveId: string) => {
-    const query = queryString.stringify({ amount });
+  const handleSubmit = async (
+    amount: string,
+    collateralReserve: string,
+    reserveId: string,
+    symbol: string
+  ) => {
+    const query = queryString.stringify({ symbol, amount });
     history.push(`/liquidation/${collateralReserve}/${reserveId}/confirmation?${query}`);
   };
 
@@ -106,6 +85,7 @@ function DataGrid() {
             placeholder="Search by address"
             value={searchValue}
             onChange={setSearchValue}
+            additionalFunctionOnChange={() => setEmptyItem()}
           />
         </div>
         {lastPage > 1 && (
@@ -137,7 +117,7 @@ function DataGrid() {
 
       <div className="DataGrid__content">
         <div className="DataGrid__table-inner">
-          {userReservesPagination.map((userReserve, i) => (
+          {userReservesPagination.map((userReserve: any, i: number) => (
             <div
               className={classNames('DataGrid__item', {
                 DataGrid__itemActive:
@@ -235,7 +215,7 @@ function DataGrid() {
           }
 
           &__link {
-            color: ${currentTheme.gray.hex};
+            color: ${currentTheme.gray.hex} !important;
           }
         }
       `}</style>
