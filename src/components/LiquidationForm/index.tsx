@@ -10,17 +10,28 @@ import DefaultButton from 'components/DefaultButton';
 import staticStyles from './style';
 
 interface LiquidationFormProps {
+  amount: string;
+  setAmount: any;
+  collateralReserve: string;
+  setCollateralReserve: any;
+  error: string;
+  setError: any;
   onSubmit: (amount: string, collateralReserve: string, reserveId: string, symbol: string) => void;
   userReserve: any;
 }
 
-export default function LiquidationForm({ onSubmit, userReserve }: LiquidationFormProps) {
+export default function LiquidationForm({
+  amount,
+  setAmount,
+  collateralReserve,
+  setCollateralReserve,
+  error,
+  setError,
+  onSubmit,
+  userReserve,
+}: LiquidationFormProps) {
   const { currentTheme } = useThemeContext();
   const intl = useIntl();
-
-  const [amount, setAmount] = useState('');
-  const [collateralReserve, setCollateralReserve] = useState('');
-  const [error, setError] = useState('');
 
   const handleCollateralClick = (event: ChangeEvent<HTMLInputElement>) => {
     setCollateralReserve(event.target.value);
@@ -46,6 +57,7 @@ export default function LiquidationForm({ onSubmit, userReserve }: LiquidationFo
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // @ts-ignore
     if (!new BigNumber(amount).isNaN() && amount !== '0') {
       return onSubmit(
         amount,

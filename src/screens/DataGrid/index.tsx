@@ -23,6 +23,9 @@ function DataGrid({ searchValue, setSearchValue, userReserves }: DataGridProps) 
   const [activeItem, setActiveItem] = useState('');
   const [activeFormData, setActiveFormData] = useState(undefined);
   const [page, setPage] = useState(1);
+  const [amount, setAmount] = useState('');
+  const [collateralReserve, setCollateralReserve] = useState('');
+  const [error, setError] = useState('');
 
   const pageSize = 10;
   const lastPage =
@@ -57,6 +60,10 @@ function DataGrid({ searchValue, setSearchValue, userReserves }: DataGridProps) 
   };
 
   const onToggle = (userId: string, reserveId: string) => {
+    setAmount('');
+    setCollateralReserve('');
+    setError('');
+
     setActiveItem(`${userId}${reserveId}`);
     const formData = userReserves.find(
       (userReserve: any) =>
@@ -159,7 +166,16 @@ function DataGrid({ searchValue, setSearchValue, userReserves }: DataGridProps) 
 
         <div className="DataGrid__form-inner">
           {activeFormData && (
-            <LiquidationForm onSubmit={handleSubmit} userReserve={activeFormData} />
+            <LiquidationForm
+              amount={amount}
+              setAmount={setAmount}
+              collateralReserve={collateralReserve}
+              setCollateralReserve={setCollateralReserve}
+              error={error}
+              setError={setError}
+              onSubmit={handleSubmit}
+              userReserve={activeFormData}
+            />
           )}
         </div>
       </div>
