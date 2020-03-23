@@ -379,7 +379,13 @@ export type LiquidatorsQuery = { __typename?: 'Query' } & {
               > & {
                   reserve: { __typename?: 'UserLiquidationReserveModel' } & Pick<
                     UserLiquidationReserveModel,
-                    'id' | 'name' | 'symbol' | 'decimals' | 'liquidityRate' | 'lastUpdateTimestamp'
+                    | 'id'
+                    | 'name'
+                    | 'symbol'
+                    | 'decimals'
+                    | 'liquidityRate'
+                    | 'lastUpdateTimestamp'
+                    | 'usageAsCollateralEnabled'
                   > & { aToken: { __typename?: 'Atoken' } & Pick<Atoken, 'id'> };
                 }
             >;
@@ -477,6 +483,7 @@ export const LiquidatorsDocument = gql`
             decimals
             liquidityRate
             lastUpdateTimestamp
+            usageAsCollateralEnabled
             aToken {
               id
             }

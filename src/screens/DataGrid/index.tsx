@@ -22,7 +22,9 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
   const history = useHistory();
 
   const [activeItem, setActiveItem] = useState('');
-  const [activeFormData, setActiveFormData] = useState<LiquidatorsQuery['liquidation'][0] | undefined>( undefined );
+  const [activeFormData, setActiveFormData] = useState<
+    LiquidatorsQuery['liquidation'][0] | undefined
+  >(undefined);
   const [page, setPage] = useState(1);
   const [amount, setAmount] = useState('');
   const [collateralReserve, setCollateralReserve] = useState('');

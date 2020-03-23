@@ -23,6 +23,7 @@ query Liquidators {
           decimals
           liquidityRate
           lastUpdateTimestamp
+          usageAsCollateralEnabled
           aToken {
             id
           }
