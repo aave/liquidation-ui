@@ -13,6 +13,7 @@ interface BasicFieldProps {
   isRequired?: boolean;
   placeholder?: string;
   step?: string;
+  additionalFunctionOnChange?: any
 }
 
 export default function BasicField({
@@ -23,6 +24,7 @@ export default function BasicField({
   isRequired,
   placeholder,
   step,
+  additionalFunctionOnChange,
   ...props
 }: BasicFieldProps) {
   const { currentTheme } = useThemeContext();
@@ -30,6 +32,7 @@ export default function BasicField({
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     onChange(event.target.value);
+    !!additionalFunctionOnChange && additionalFunctionOnChange();
   };
 
   return (

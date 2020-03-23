@@ -8,36 +8,37 @@ import AmountField from 'components/fields/AmountField';
 import DefaultButton from 'components/DefaultButton';
 
 import staticStyles from './style';
+import { LiquidatorsQuery } from '../../apollo/generated';
 
 interface LiquidationFormProps {
-  onSubmit: (
-    amount: string,
-    collateralReserve: string,
-    userAddress: string,
-    reserveId: string
-  ) => void;
-  currencySymbol: string;
-  userReserve: any;
+  amount: string;
+  setAmount: any;
+  collateralReserve: string;
+  setCollateralReserve: any;
+  error: string;
+  setError: any;
+  onSubmit: (amount: string, liquidatedUser: string, collateralReserve: string, reserveId: string, symbol: string) => void;
+  userReserve: LiquidatorsQuery['liquidation'][0];
 }
 
 export default function LiquidationForm({
+  amount,
+  setAmount,
+  collateralReserve,
+  setCollateralReserve,
+  error,
+  setError,
   onSubmit,
-  currencySymbol,
   userReserve,
 }: LiquidationFormProps) {
   const { currentTheme } = useThemeContext();
   const intl = useIntl();
 
-  const [amount, setAmount] = useState('');
-  const [collateralReserve, setCollateralReserve] = useState('');
-  const [error, setError] = useState('');
-
   const handleCollateralClick = (event: ChangeEvent<HTMLInputElement>) => {
     setCollateralReserve(event.target.value);
   };
 
-  const principalBorrowsUnit = new BigNumber(10).pow(userReserve.reserve.decimals)
-  const maxAmount = new BigNumber(userReserve.principalBorrows).div(principalBorrowsUnit.times(2)).toString();
+  const maxAmount = new BigNumber(userReserve.principalBorrows).div(2).toString();
 
   const handleAmountChange = (newAmount: string) => {
     const newAmountValue = new BigNumber(newAmount);
@@ -57,9 +58,15 @@ export default function LiquidationForm({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // @ts-ignore
     if (!new BigNumber(amount).isNaN() && amount !== '0') {
-      
-      return onSubmit(amount, collateralReserve, userReserve.reserve.id, userReserve.user.id);
+      return onSubmit(
+        amount,
+        userReserve.user.id,
+        collateralReserve,
+        userReserve.reserve.id,
+        userReserve.reserve.symbol
+      );
     }
 
     setError('Please input the correct amount');
@@ -71,7 +78,7 @@ export default function LiquidationForm({
         <div className="LiquidationForm__line">
           <h3>Collaterals</h3>
           {userReserve.user.reservesData.filter((item : any) => new BigNumber(item.principalATokenBalance).gt(0) && item.usageAsCollateralEnabledOnUser).map((res: any, i: number) => {
-
+            console.log(res.principalATokenBalance)
             return(
             <div
               className={classNames('LiquidationForm__radioField', {
@@ -103,14 +110,14 @@ export default function LiquidationForm({
           <h3>Borrows</h3>
           <p>
             <span>{userReserve.reserve.symbol}</span>
-            {new BigNumber(userReserve.principalBorrows).div(principalBorrowsUnit).toFixed(18)}
+            {new BigNumber(userReserve.principalBorrows).toFixed(userReserve.reserve.decimals)}
           </p>
         </div>
       </div>
 
       <div className="LiquidationForm__bottom-inner">
         <AmountField
-          currency={currencySymbol}
+          currency={userReserve.reserve.symbol}
           value={amount}
           onChange={handleAmountChange}
           error={error}

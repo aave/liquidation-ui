@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Switch, Route } from 'react-router-dom';
 
-import { DataGrid } from './screens/DataGrid';
+import DataGridWrapper from './screens/DataGridWrapper';
 import LiquidationConfirmation from './screens/LiquidationConfirmation';
 
 import css from 'styled-jsx/css';
@@ -26,10 +26,10 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route exact={true} path="/" component={DataGrid} />
+        <Route exact={true} path="/" component={DataGridWrapper} />
         <Route
           exact={true}
-          path="/liquidation/:collateralReserve/:reserveId/:user/confirmation"
+          path="/liquidation/:collateralReserve/:reserveId/confirmation"
           component={LiquidationConfirmation}
         />
 

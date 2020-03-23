@@ -1,38 +1,5 @@
 query Liquidators {
-  priceOracle(id: 1) {
-    usdPriceEth
-  }
-  reserves {
-    id
-    name
-    symbol
-    decimals
-    isActive
-    usageAsCollateralEnabled
-    borrowingEnabled
-    stableBorrowRateEnabled
-    baseLTVasCollateral
-    liquidityIndex
-    reserveLiquidationThreshold
-    variableBorrowIndex
-    aToken {
-      id
-    }
-    availableLiquidity
-    stableBorrowRate
-    liquidityRate
-    totalBorrows
-    totalBorrowsStable
-    totalBorrowsVariable
-    totalLiquidity
-    utilizationRate
-    variableBorrowRate
-    price {
-      priceInEth
-    }
-    lastUpdateTimestamp
-  }
-  userReserves(where: {principalBorrows_gt: 0}, first: 999) {
+  liquidation {
     principalBorrows
     reserve {
       id
@@ -41,7 +8,10 @@ query Liquidators {
     }
     user {
       id
-      reserves {
+      healthFactor
+      totalBorrowsWithFeesETH
+      totalCollateralETH
+      reservesData {
         principalATokenBalance
         userBalanceIndex
         redirectedBalance
