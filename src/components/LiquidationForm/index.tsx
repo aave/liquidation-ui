@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import BigNumber from 'bignumber.js';
 import { useIntl } from 'react-intl';
 import classNames from 'classnames';
@@ -12,12 +12,18 @@ import { LiquidatorsQuery } from '../../apollo/generated';
 
 interface LiquidationFormProps {
   amount: string;
-  setAmount: any;
+  setAmount: (value: string) => void;
   collateralReserve: string;
-  setCollateralReserve: any;
+  setCollateralReserve: (value: string) => void;
   error: string;
-  setError: any;
-  onSubmit: (amount: string, liquidatedUser: string, collateralReserve: string, reserveId: string, symbol: string) => void;
+  setError: (value: string) => void;
+  onSubmit: (
+    amount: string,
+    liquidatedUser: string,
+    collateralReserve: string,
+    reserveId: string,
+    symbol: string
+  ) => void;
   userReserve: LiquidatorsQuery['liquidation'][0];
 }
 
@@ -76,8 +82,8 @@ export default function LiquidationForm({
     <form className="LiquidationForm" onSubmit={handleSubmit}>
       <div className="LiquidationForm__top-inner">
         <div className="LiquidationForm__line">
-          <h3>Collaterals</h3>
-          {userReserve.user.reservesData.map((res: any, i: number) => (
+          <h3>Collateral</h3>
+          {userReserve.user.reservesData.map((res, i) => (
             <div
               className={classNames('LiquidationForm__radioField', {
                 LiquidationForm__radioFieldActive: collateralReserve === res.reserve.id,

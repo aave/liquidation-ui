@@ -24,12 +24,16 @@ export default function LiquidationConfirmation() {
   const { currentTheme } = useThemeContext();
 
   const query = queryString.parse(location.search);
-  if (typeof query.amount !== 'string' || typeof query.symbol !== 'string' || typeof query.liquidatedUser !== 'string') {
+  if (
+    typeof query.amount !== 'string' ||
+    typeof query.symbol !== 'string' ||
+    typeof query.liquidatedUser !== 'string'
+  ) {
     // TODO: add error
     return null;
   }
   const amount = new BigNumber(query.amount);
-  const {symbol, liquidatedUser } = query;
+  const { symbol, liquidatedUser } = query;
 
   const liquidationCall = async () => {
     const result = await LiquidationCallMutation({
