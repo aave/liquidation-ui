@@ -2,7 +2,7 @@ overwrite: true
 hooks:
   afterAllFileWrite:
     - prettier --single-quote --write
-schema: "http://localhost:5000/graphql"
+schema: "https://protocol-api.aave.com/graphql"
 watch: true
 config:
   withHOC: false
@@ -12,8 +12,6 @@ config:
   hooksImportFrom: "@apollo/react-hooks"
 generates:
   src/apollo/generated.tsx:
-    schema:
-      - https://api.thegraph.com/subgraphs/name/aave/protocol-ropsten-raw
     documents:
       - "src/apollo/queries/*.graphql"
       - "src/apollo/mutations/*.graphql"

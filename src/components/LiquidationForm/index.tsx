@@ -8,6 +8,7 @@ import AmountField from 'components/fields/AmountField';
 import DefaultButton from 'components/DefaultButton';
 
 import staticStyles from './style';
+import { LiquidatorsQuery } from '../../apollo/generated';
 
 interface LiquidationFormProps {
   amount: string;
@@ -16,8 +17,8 @@ interface LiquidationFormProps {
   setCollateralReserve: any;
   error: string;
   setError: any;
-  onSubmit: (amount: string, collateralReserve: string, reserveId: string, symbol: string) => void;
-  userReserve: any;
+  onSubmit: (amount: string, liquidatedUser: string, collateralReserve: string, reserveId: string, symbol: string) => void;
+  userReserve: LiquidatorsQuery['liquidation'][0];
 }
 
 export default function LiquidationForm({
@@ -37,7 +38,7 @@ export default function LiquidationForm({
     setCollateralReserve(event.target.value);
   };
 
-  const maxAmount = (userReserve.principalBorrows / 2).toString();
+  const maxAmount = new BigNumber(userReserve.principalBorrows).dividedBy(2).toString();
 
   const handleAmountChange = (newAmount: string) => {
     const newAmountValue = new BigNumber(newAmount);
@@ -61,6 +62,7 @@ export default function LiquidationForm({
     if (!new BigNumber(amount).isNaN() && amount !== '0') {
       return onSubmit(
         amount,
+        userReserve.user.id,
         collateralReserve,
         userReserve.reserve.id,
         userReserve.reserve.symbol

@@ -9,30 +9,31 @@ import SearchField from 'components/fields/SearchField';
 import Link from 'components/Link';
 
 import staticStyles from './style';
+import { LiquidatorsQuery } from '../../apollo/generated';
 
 interface DataGridProps {
   searchValue: string;
-  setSearchValue: any;
-  userReserves: any;
+  setSearchValue: (value: string) => void;
+  liquidations: LiquidatorsQuery['liquidation'];
 }
 
-function DataGrid({ searchValue, setSearchValue, userReserves }: DataGridProps) {
+function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) {
   const { currentTheme } = useThemeContext();
   const history = useHistory();
 
   const [activeItem, setActiveItem] = useState('');
-  const [activeFormData, setActiveFormData] = useState(undefined);
+  const [activeFormData, setActiveFormData] = useState<LiquidatorsQuery['liquidation'][0] | undefined>( undefined );
   const [page, setPage] = useState(1);
   const [amount, setAmount] = useState('');
   const [collateralReserve, setCollateralReserve] = useState('');
   const [error, setError] = useState('');
 
-  const pageSize = 10;
+  const pageSize = 50;
   const lastPage =
-    Math.round(userReserves.length / pageSize) !== 0
-      ? Math.round(userReserves.length / pageSize)
+    Math.round(liquidations.length / pageSize) !== 0
+      ? Math.round(liquidations.length / pageSize)
       : 1;
-  const userReservesPagination = userReserves.slice((page - 1) * pageSize, page * pageSize);
+  const userReservesPagination = liquidations.slice((page - 1) * pageSize, page * pageSize);
 
   const setEmptyItem = () => {
     setActiveItem('');
@@ -65,22 +66,22 @@ function DataGrid({ searchValue, setSearchValue, userReserves }: DataGridProps) 
     setError('');
 
     setActiveItem(`${userId}${reserveId}`);
-    const formData = userReserves.find(
+    const formData = liquidations.find(
       (userReserve: any) =>
         `${userId}${reserveId}` === `${userReserve.user.id}${userReserve.reserve.id}`
     );
-    // @ts-ignore
     setActiveFormData(formData);
   };
   const hoverColor = rgba(`${currentTheme.secondary.rgb}, 0.4`);
 
   const handleSubmit = async (
     amount: string,
+    liquidatedUser: string,
     collateralReserve: string,
     reserveId: string,
     symbol: string
   ) => {
-    const query = queryString.stringify({ symbol, amount });
+    const query = queryString.stringify({ symbol, amount, liquidatedUser });
     history.push(`/liquidation/${collateralReserve}/${reserveId}/confirmation?${query}`);
   };
 
@@ -124,7 +125,7 @@ function DataGrid({ searchValue, setSearchValue, userReserves }: DataGridProps) 
 
       <div className="DataGrid__content">
         <div className="DataGrid__table-inner">
-          {userReservesPagination.map((userReserve: any, i: number) => (
+          {userReservesPagination.map((userReserve, i) => (
             <div
               className={classNames('DataGrid__item', {
                 DataGrid__itemActive:

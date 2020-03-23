@@ -6,7 +6,7 @@ import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';
 
 export function getApolloClient(): ApolloClient<NormalizedCacheObject> {
-  const queryLink = new HttpLink({ uri: 'https://api.thegraph.com/subgraphs/name/aave/protocol-raw' });
+  const queryLink = new HttpLink({ uri: 'https://protocol-api.aave.com/graphql' });
 
   // depending on what kind of operation is being sent
   const mutationsLink = new HttpLink({ uri: 'https://protocol-api.aave.com/graphql' });

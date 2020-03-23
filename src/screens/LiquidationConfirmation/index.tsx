@@ -11,31 +11,35 @@ import TokenIcon from 'components/TokenIcon';
 
 import staticStyles from './style';
 
+interface LiquidationConfirmationRouteParams {
+  collateralReserve: string;
+  reserveId: string;
+}
+
 export default function LiquidationConfirmation() {
   const [LiquidationCallMutation] = useLiquidationCallMutation();
   const location = useLocation();
-  const { collateralReserve, reserveId } = useParams();
+  const { collateralReserve, reserveId } = useParams<LiquidationConfirmationRouteParams>();
   const { wallet } = useWeb3Context();
   const { currentTheme } = useThemeContext();
 
-  let amount: any = '';
-  let symbol: any = '';
   const query = queryString.parse(location.search);
-  if (typeof query.amount === 'string') {
-    amount = new BigNumber(query.amount);
+  if (typeof query.amount !== 'string' || typeof query.symbol !== 'string' || typeof query.liquidatedUser !== 'string') {
+    // TODO: add error
+    return null;
   }
-  if (typeof query.symbol === 'string') {
-    symbol = query.symbol;
-  }
+  const amount = new BigNumber(query.amount);
+  const {symbol, liquidatedUser } = query;
 
   const liquidationCall = async () => {
     const result = await LiquidationCallMutation({
       variables: {
         data: {
-          userAddress: wallet || '',
-          collateralReserve: collateralReserve || '',
+          liquidatedUser,
+          userAddress: wallet,
+          collateralReserve: collateralReserve,
           purchaseAmount: amount.toString(),
-          reserve: reserveId || '',
+          reserve: reserveId,
         },
       },
     });
