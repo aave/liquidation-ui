@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 import BigNumber from 'bignumber.js';
-import { useIntl } from 'react-intl';
 import classNames from 'classnames';
 
 import { useThemeContext } from 'libs/theme-provider';
@@ -38,7 +37,6 @@ export default function LiquidationForm({
   userReserve,
 }: LiquidationFormProps) {
   const { currentTheme } = useThemeContext();
-  const intl = useIntl();
 
   const handleCollateralClick = (event: ChangeEvent<HTMLInputElement>) => {
     setCollateralReserve(event.target.value);
@@ -83,32 +81,42 @@ export default function LiquidationForm({
       <div className="LiquidationForm__top-inner">
         <div className="LiquidationForm__line">
           <h3>Collaterals</h3>
-          {userReserve.user.reservesData.filter((item : any) => new BigNumber(item.principalATokenBalance).gt(0) && item.usageAsCollateralEnabledOnUser && item.reserve.usageAsCollateralEnabled).map((res: any, i: number) => {
-            return(
-            <div
-              className={classNames('LiquidationForm__radioField', {
-                LiquidationForm__radioFieldActive: collateralReserve === res.reserve.id,
-              })}
-              key={i}
-            >
-              <input
-                type="radio"
-                id={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
-                name="Collaterals"
-                value={res.reserve.id}
-                checked={collateralReserve === res.reserve.id}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => handleCollateralClick(event)}
-              />
-              <label
-                htmlFor={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
-              >
-                <p>
-                  <span>{res.reserve.symbol}</span>
-                  {new BigNumber(res.principalATokenBalance).toFixed(res.reserve.decimals)}
-                </p>
-              </label>
-            </div>
-          )})}
+          {userReserve.user.reservesData
+            .filter(
+              item =>
+                new BigNumber(item.principalATokenBalance).gt(0) &&
+                item.usageAsCollateralEnabledOnUser &&
+                item.reserve.usageAsCollateralEnabled
+            )
+            .map((res, i) => {
+              return (
+                <div
+                  className={classNames('LiquidationForm__radioField', {
+                    LiquidationForm__radioFieldActive: collateralReserve === res.reserve.id,
+                  })}
+                  key={i}
+                >
+                  <input
+                    type="radio"
+                    id={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
+                    name="Collaterals"
+                    value={res.reserve.id}
+                    checked={collateralReserve === res.reserve.id}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      handleCollateralClick(event)
+                    }
+                  />
+                  <label
+                    htmlFor={`Collateral__${userReserve.user.id}-${userReserve.reserve.symbol}-${i}`}
+                  >
+                    <p>
+                      <span>{res.reserve.symbol}</span>
+                      {new BigNumber(res.principalATokenBalance).toFixed(res.reserve.decimals)}
+                    </p>
+                  </label>
+                </div>
+              );
+            })}
         </div>
 
         <div className="LiquidationForm__line">
