@@ -88,10 +88,9 @@ export function DataGrid() {
   };
   const hoverColor = rgba(`${currentTheme.secondary.rgb}, 0.4`);
 
-  const handleSubmit = async (amount: string, collateralReserve: string, reserveId: string) => {
-    console.log(amount, collateralReserve, reserveId )
+  const handleSubmit = async (amount: string, collateralReserve: string, reserveId: string, user: string) => {
     const query = queryString.stringify({ amount });
-    history.push(`/liquidation/${collateralReserve}/${reserveId}/confirmation?${query}`);
+    history.push(`/liquidation/${collateralReserve}/${reserveId}/${user}/confirmation?${query}`);
   };
 
   return (

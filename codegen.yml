@@ -2,7 +2,7 @@ overwrite: true
 hooks:
   afterAllFileWrite:
     - prettier --single-quote --write
-schema: "http://localhost:5000/graphql"
+schema: "https://protocol-api.aave.com/graphql"
 watch: true
 config:
   withHOC: false

@@ -10,7 +10,7 @@ import TxConfirmationView from 'components/TxConfirmationView';
 export default function LiquidationConfirmation() {
   const [LiquidationCallMutation] = useLiquidationCallMutation();
   const location = useLocation();
-  const { collateralReserve, reserveId } = useParams();
+  const { collateralReserve, reserveId, user } = useParams();
   const { wallet } = useWeb3Context();
 
   let amount: any = '';
@@ -25,6 +25,7 @@ export default function LiquidationConfirmation() {
       variables: {
         data: {
           userAddress: wallet || '',
+          liquidatedUser: user || '',
           collateralReserve: collateralReserve || '',
           purchaseAmount: amount.toString(),
           reserve: reserveId || '',

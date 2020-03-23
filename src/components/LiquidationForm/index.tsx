@@ -59,7 +59,7 @@ export default function LiquidationForm({
     event.preventDefault();
     if (!new BigNumber(amount).isNaN() && amount !== '0') {
       
-      return onSubmit(amount, collateralReserve, userReserve.user.id, userReserve.reserve.id);
+      return onSubmit(amount, collateralReserve, userReserve.reserve.id, userReserve.user.id);
     }
 
     setError('Please input the correct amount');
