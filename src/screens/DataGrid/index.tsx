@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState, memo } from 'react';
 import { useHistory } from 'react-router';
 import classNames from 'classnames';
 import queryString from 'query-string';
+import Collapse from '@kunukn/react-collapse';
 
 import { useThemeContext, rgba } from 'libs/theme-provider';
 import LiquidationForm from 'components/LiquidationForm';
@@ -22,9 +23,6 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
   const history = useHistory();
 
   const [activeItem, setActiveItem] = useState('');
-  const [activeFormData, setActiveFormData] = useState<
-    LiquidatorsQuery['liquidation'][0] | undefined
-  >(undefined);
   const [page, setPage] = useState(1);
   const [amount, setAmount] = useState('');
   const [collateralReserve, setCollateralReserve] = useState('');
@@ -39,7 +37,6 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
 
   const setEmptyItem = () => {
     setActiveItem('');
-    setActiveFormData(undefined);
   };
 
   const handlePageButtonClick = (type: 'prev' | 'next') => {
@@ -67,14 +64,8 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
     setCollateralReserve('');
     setError('');
 
-    setActiveItem(`${userId}${reserveId}`);
-    const formData = liquidations.find(
-      (userReserve: any) =>
-        `${userId}${reserveId}` === `${userReserve.user.id}${userReserve.reserve.id}`
-    );
-    setActiveFormData(formData);
+    setActiveItem(activeItem === `${userId}${reserveId}` ? '' : `${userId}${reserveId}`);
   };
-  const hoverColor = rgba(`${currentTheme.secondary.rgb}, 0.4`);
 
   const handleSubmit = async (
     amount: string,
@@ -86,6 +77,8 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
     const query = queryString.stringify({ symbol, amount, liquidatedUser });
     history.push(`/liquidation/${collateralReserve}/${reserveId}/confirmation?${query}`);
   };
+
+  const hoverColor = rgba(`${currentTheme.secondary.rgb}, 0.4`);
 
   return (
     <div className="DataGrid">
@@ -162,24 +155,27 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
                   <span>Total Collateral (ETH)</span>
                   {userReserve.user.totalCollateralETH}
                 </p>
+
+                <div className="DataGrid__arrows" />
               </button>
+
+              <Collapse
+                className="DataGrid__form-inner"
+                isOpen={activeItem === `${userReserve.user.id}${userReserve.reserve.id}`}
+              >
+                <LiquidationForm
+                  amount={amount}
+                  setAmount={setAmount}
+                  collateralReserve={collateralReserve}
+                  setCollateralReserve={setCollateralReserve}
+                  error={error}
+                  setError={setError}
+                  onSubmit={handleSubmit}
+                  userReserve={userReserve}
+                />
+              </Collapse>
             </div>
           ))}
-        </div>
-
-        <div className="DataGrid__form-inner">
-          {activeFormData && (
-            <LiquidationForm
-              amount={amount}
-              setAmount={setAmount}
-              collateralReserve={collateralReserve}
-              setCollateralReserve={setCollateralReserve}
-              error={error}
-              setError={setError}
-              onSubmit={handleSubmit}
-              userReserve={activeFormData}
-            />
-          )}
         </div>
       </div>
 
@@ -201,6 +197,14 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
 
           &__item-button {
             color: ${currentTheme.gray.hex};
+          }
+
+          &__arrows {
+            border-color: ${currentTheme.gray.hex};
+            &:after,
+            &:before {
+              background: ${currentTheme.gray.hex};
+            }
           }
 
           &__pagination-button {
@@ -231,6 +235,10 @@ function DataGrid({ searchValue, setSearchValue, liquidations }: DataGridProps) 
           &__itemActive {
             box-shadow: 0 1px 12px 0 ${hoverColor} !important;
             border-color: ${hoverColor} !important;
+
+            .DataGrid__item-button {
+              border-bottom: 1px solid ${currentTheme.lightGrayBorder.hex};
+            }
           }
 
           &__link {
