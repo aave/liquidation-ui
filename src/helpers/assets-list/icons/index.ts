@@ -1,5 +1,6 @@
 import ampl from './ampl.svg';
 import bat from './bat.svg';
+import busd from './busd.svg';
 import dai from './dai.svg';
 import eth from './eth.svg';
 import eth_dark from './eth_dark.svg';
@@ -26,6 +27,7 @@ interface Images {
 
 export default {
   ampl,
+  busd,
   bat,
   dai,
   eth,

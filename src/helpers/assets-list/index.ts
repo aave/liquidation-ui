@@ -27,6 +27,18 @@ export const assetsList: Asset[] = [
     },
   },
   {
+    name: 'Binance USD',
+    symbol: 'BUSD',
+    color: {
+      normal: '#f0b90b',
+      dark: '#c4980e',
+    },
+    icon: {
+      normal: icons.busd,
+      dark: icons.busd,
+    },
+  },
+  {
     name: 'DAI',
     symbol: 'DAI',
     color: {
